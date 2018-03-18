@@ -1,0 +1,63 @@
+{
+  "name": "offer",
+  "version": "1.0.0",
+  "description": "Offer service",
+  "license": "ISC",
+  "author": "Erento GmbH.",
+  "main": "index.js",
+  "scripts": {
+    "build": "node dist/main.js",
+    "lint": "tslint -c tslint.json --fix -e \"**/node_modules/**\" -p ./tsconfig.json",
+    "lint-staged": "lint-staged",
+    "prebuild": "tsc",
+    "start": "node index.js",
+    "test": "jest --watch",
+    "test:single": "jest"
+  },
+  "dependencies": {
+    "@nestjs/common": "4.6.6",
+    "@nestjs/core": "4.6.6",
+    "@nestjs/microservices": "4.6.6",
+    "@nestjs/testing": "4.6.6",
+    "@nestjs/websockets": "4.6.6",
+    "redis": "2.8.0",
+    "reflect-metadata": "0.1.12",
+    "rxjs": "5.5.7",
+    "typescript": "2.7.2"
+  },
+  "devDependencies": {
+    "@types/jest": "22.2.0",
+    "@types/node": "9.4.7",
+    "jest": "22.4.2",
+    "lint-staged": "7.0.0",
+    "nodemon": "1.17.2",
+    "pre-commit": "1.2.2",
+    "ts-jest": "22.4.1",
+    "ts-node": "5.0.1",
+    "tslint": "5.9.1",
+    "tslint-eslint-rules": "5.1.0"
+  },
+  "precommit": [
+    "lint-staged"
+  ],
+  "lint-staged": {
+    "*.ts": [
+      "npm run lint",
+      "git add"
+    ]
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  }
+}
