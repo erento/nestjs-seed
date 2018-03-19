@@ -12,6 +12,6 @@ describe('Erento paths', () => {
     });
 
     it('version', () => {
-        expect(new VersionController().get()).toBe('1.0.0');
+        expect(new VersionController('1.0.0').get()).toBe('1.0.0');
     });
 });

@@ -1,12 +1,12 @@
-import {Controller, Get} from '@nestjs/common';
-
-// tslint:disable-next-line no-var-requires no-require-imports
-const {version}: {version: string} = require('../../package.json');
+import {Controller, Get, Inject} from '@nestjs/common';
+import {APP_VERSION} from './providers';
 
 @Controller('version')
 export class VersionController {
+    constructor (@Inject(APP_VERSION) private readonly appVersion: string) {}
+
     @Get()
     public get (): string {
-        return version;
+        return this.appVersion;
     }
 }

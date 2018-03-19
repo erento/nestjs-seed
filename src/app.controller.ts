@@ -1,8 +1,7 @@
-import {Controller, Get, HttpCode, HttpStatus} from '@nestjs/common';
+import {Controller, Get} from '@nestjs/common';
 
 @Controller()
 export class AppController {
     @Get()
-    @HttpCode(HttpStatus.NO_CONTENT)
-    public root (): void {}
+    public get (): void {}
 }
