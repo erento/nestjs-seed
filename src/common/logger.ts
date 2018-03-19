@@ -1,12 +1,17 @@
 import * as bugsnag from 'bugsnag';
 import * as cliColor from 'cli-color';
 import {Component} from '@nestjs/common';
+import {Environments} from '../environments/environmets';
 
 const dateOptions: Intl.DateTimeFormatOptions = {
-    timeZone: 'UTC',
+    ...{},
+    ...(Environments.isProd() ? {timeZone: 'UTC'} : {}),
 };
+
 let lastUsedColor: Function = cliColor.cyan;
+
 const colorMethod: Function = (): Function => lastUsedColor === cliColor.cyan ? cliColor.magenta : cliColor.cyan;
+
 const log: Function = (...args: string[]): void => {
     console.log(
         colorMethod()(`${new Date(Date.now()).toLocaleString('en-GB', dateOptions)}:`),

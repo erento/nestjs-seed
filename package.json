@@ -11,8 +11,8 @@
     "lint-staged": "lint-staged",
     "prebuild": "tsc",
     "start": "node index.js",
-    "test": "jest --watch",
-    "test:single": "jest"
+    "test": "npm run test:single -- --watch",
+    "test:single": "ENV=test jest"
   },
   "dependencies": {
     "@nestjs/common": "4.6.6",
