@@ -5,7 +5,11 @@ import {VersionController} from './version.controller';
 import {APP_VERSION} from './providers';
 
 @Module({
-    controllers: [HealthController, PingController, VersionController],
+    controllers: [
+        HealthController,
+        PingController,
+        VersionController,
+    ],
 })
 export class ErentoPathsModule {
     public static forRoot (appVersion: string): DynamicModule {

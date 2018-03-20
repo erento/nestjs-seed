@@ -7,7 +7,7 @@ const filteredUrls: string[] = [
 
 @Middleware()
 export class RequestMiddelware implements NestMiddleware {
-    constructor (private logger: ErentoLogger) {}
+    constructor (private readonly logger: ErentoLogger) {}
 
     public async resolve (): Promise<ExpressMiddleware> {
         return async (req: Request, _res: any, next: any): Promise<any> => {
