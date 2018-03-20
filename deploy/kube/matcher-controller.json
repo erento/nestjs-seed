@@ -1,0 +1,68 @@
+{
+  "apiVersion": "v1",
+  "kind": "ReplicationController",
+  "metadata": {
+    "name": "x---service-slug---x"
+  },
+  "spec": {
+    "replicas": 1,
+    "selector": {
+      "app": "x---service-slug---x",
+      "role": "api"
+    },
+    "template": {
+      "metadata": {
+        "labels": {
+          "app": "x---service-slug---x",
+          "role": "api"
+        }
+      },
+      "spec": {
+        "containers": [
+          {
+            "name": "x---service-slug---x",
+            "image": "gcr.io/google_containers/pause",
+            "env": [
+              {
+                "name": "NODE_ENV",
+                "valueFrom": {
+                  "fieldRef": {
+                    "fieldPath": "metadata.namespace"
+                  }
+                }
+              }
+            ],
+            "ports": [
+              {
+                "containerPort": 80
+              }
+            ],
+            "resources": {
+              "requests": {
+                "memory": "300Mi",
+                "cpu": 0.1
+              },
+              "limits": {
+                "memory": "500Mi",
+                "cpu": 0.2
+              }
+            },
+            "livenessProbe": {
+              "httpGet": {
+                "path": "/health",
+                "port": 80
+              },
+              "timeoutSeconds": 2,
+              "periodSeconds": 60
+            }
+          }
+        ],
+        "imagePullSecrets": [
+          {
+            "name": "docker-registry-google-eu"
+          }
+        ]
+      }
+    }
+  }
+}

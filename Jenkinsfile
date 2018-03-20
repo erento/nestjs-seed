@@ -1,11 +1,11 @@
-projectBaseName = "offer-node"
+projectBaseName = "x---service-slug---x"
 appVersion = env.BUILD_ID
 if (env.BRANCH_NAME != "master") {
     appVersion = "DEV${generateMD5(env.BRANCH_NAME)}_V_${env.BUILD_ID}"
 }
 
 imageName = "${projectBaseName}:${appVersion}"
-buildServiceImage = docker.image('node:9.8-onbuild')
+buildServiceImage = docker.image('node:9.10')
 
 node {
     stage("checkout") {
@@ -13,15 +13,11 @@ node {
         checkout scm
     }
 
-    stage("change app version") {
-        sh(script: "sed -i'.bak' -e 's/\"version\": \"1.0.0\"/\"version\": \"version-${appVersion}\"/g' ./package.json")
-    }
-
-    stage("build service") {
+    stage("prepare dependencies") {
         buildServiceImage.inside('--tmpfs /home/jenkins:size=512M -e HOME=/home/jenkins') {
-            sh(script: "npm run build")
+            sh(script: "npm run install")
         }
-        milestone(label: 'service built')
+        milestone(label: 'dependencies ready')
     }
 
     stage("tests") {
@@ -29,6 +25,14 @@ node {
             sh(script: "npm run test:single")
         }
         milestone(label: 'tests completed')
+    }
+
+    stage("build service") {
+        buildServiceImage.inside('--tmpfs /home/jenkins:size=512M -e HOME=/home/jenkins') {
+            sh(script: "npm run build")
+            sh(script: "rm -rf src")
+        }
+        milestone(label: 'service built')
     }
 
     stage("bake service image") {
@@ -40,23 +44,21 @@ node {
     stage("deploy to beta") {
         deploy(projectBaseName, imageName, "beta")
     }
-}
 
-if (env.BRANCH_NAME == "master") {
-    stage('master to production') {
-        milestone(label: 'awaiting deploy to prod')
+    if (env.BRANCH_NAME == "master") {
+        stage('master to production') {
+            milestone(label: 'awaiting deploy to prod')
 
-        try {
-            input(message: 'Deploy to production?', ok: 'Deploy')
-        } catch (err) {
-            def user = err.getCauses()[0].getUser()
-            echo "Aborted by: [${user}]"
-            currentBuild.result = 'NOT_BUILT'
-            throw err
-        }
+            try {
+                input(message: 'Deploy to production?', ok: 'Deploy')
+            } catch (err) {
+                def user = err.getCauses()[0].getUser()
+                echo "Aborted by: [${user}]"
+                currentBuild.result = 'NOT_BUILT'
+                throw err
+            }
 
-        //deploy regularly as pod in k8s
-        node {
+            //deploy regularly as pod in k8s
             deploy(projectBaseName, imageName, "production")
         }
     }

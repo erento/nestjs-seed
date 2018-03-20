@@ -1,6 +1,11 @@
 import {ExpressMiddleware, Middleware, NestMiddleware} from '@nestjs/common';
 import {ErentoLogger} from './logger';
 
+/**
+ * List of URLs which will be skipped for logging.
+ *
+ * @type {string[]}
+ */
 const filteredUrls: string[] = [
     '/favicon.ico',
 ];
@@ -13,14 +18,10 @@ export class RequestMiddelware implements NestMiddleware {
         return async (req: Request, _res: any, next: any): Promise<any> => {
             if (filteredUrls.indexOf(req.url) !== -1) {
                 next();
-                return;
+                return undefined;
             }
-            this.logger.log(
-                req.url,
-                req.mode,
-                JSON.stringify(req['query']),
-                JSON.stringify(req['params']),
-            );
+
+            this.logger.log(req.url, req.mode);
             next();
         };
     }

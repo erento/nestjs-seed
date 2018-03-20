@@ -1,0 +1,24 @@
+{
+  "kind": "Service",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "x---service-slug---x",
+    "labels": {
+      "app": "x---service-slug---x",
+      "exposed": "service",
+      "role": "api"
+    }
+  },
+  "spec": {
+    "selector": {
+      "app": "x---service-slug---x",
+      "role": "api"
+    },
+    "ports": [
+      {
+        "port": 80,
+        "targetPort": 3000
+      }
+    ]
+  }
+}

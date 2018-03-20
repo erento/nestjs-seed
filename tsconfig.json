@@ -19,6 +19,7 @@
     "outDir": "./dist"
   },
   "include": [
+    "health.ts",
     "src/**/*"
   ],
   "exclude": [

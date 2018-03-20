@@ -1,16 +1,20 @@
 {
-  "name": "offer",
+  "name": "x---service-slug---x",
   "version": "1.0.0",
-  "description": "Offer service",
+  "description": "x---service-name---x description",
   "license": "ISC",
-  "author": "Erento GmbH.",
+  "author": "Erento GmbH <developers@erento.com> (https://www.erento.com)",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erento/x---service-slug---x.git"
+  },
   "scripts": {
-    "build": "node dist/main.js",
+    "build": "tsc && npm prune --json --production",
     "lint": "tslint -c tslint.json --fix -e \"**/node_modules/**\" -p ./tsconfig.json",
     "lint-staged": "lint-staged",
-    "prebuild": "tsc",
     "start": "node index.js",
+    "start:prod": "ENV=production node dist/main.js",
     "test": "npm run test:single -- --watch",
     "test:single": "ENV=test jest"
   },
@@ -20,25 +24,26 @@
     "@nestjs/microservices": "4.6.6",
     "@nestjs/testing": "4.6.6",
     "@nestjs/websockets": "4.6.6",
+    "axios": "0.18.0",
+    "bugsnag": "2.3.1",
+    "cli-color": "1.2.0",
     "redis": "2.8.0",
     "reflect-metadata": "0.1.12",
-    "rxjs": "5.5.7",
-    "typescript": "2.7.2"
+    "rxjs": "5.5.8",
+    "typescript": "2.8.3"
   },
   "devDependencies": {
     "@types/cli-color": "0.3.29",
-    "@types/jest": "22.2.0",
-    "@types/node": "9.4.7",
-    "bugsnag": "2.3.1",
-    "cli-color": "1.2.0",
-    "jest": "22.4.2",
-    "lint-staged": "7.0.0",
-    "nodemon": "1.17.2",
+    "@types/jest": "22.2.3",
+    "@types/node": "10.0.4",
+    "jest": "22.4.3",
+    "lint-staged": "7.1.0",
+    "nodemon": "1.17.4",
     "pre-commit": "1.2.2",
-    "ts-jest": "22.4.1",
-    "ts-node": "5.0.1",
-    "tslint": "5.9.1",
-    "tslint-eslint-rules": "5.1.0"
+    "ts-jest": "22.4.5",
+    "ts-node": "6.0.3",
+    "tslint": "5.10.0",
+    "tslint-eslint-rules": "5.2.0"
   },
   "precommit": [
     "lint-staged"

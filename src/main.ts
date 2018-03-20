@@ -10,8 +10,8 @@ async function bootstrap (): Promise<any> {
     const app: INestApplication = await NestFactory.create(ApplicationModule);
 
     app.useGlobalFilters(registerBugsnagAndGetFilter(Environments.getBugsnagKey(), {
-        appVersion: Environments.getPackageJson().version,
-        releaseStage: 'development',
+        appVersion: Environments.getVersion(),
+        releaseStage: Environments.getReleaseStage(),
         packageJSON: JSON.stringify(Environments.getPackageJson()),
     }));
 
