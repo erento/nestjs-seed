@@ -1,19 +1,19 @@
 import {Global, Module} from '@nestjs/common';
 import {ErentoLogger} from './logger';
-import {RequestMiddelware} from './request.middelware';
+import {RequestMiddleware} from './request-middleware.service';
 import {AuthorizationGuard} from './guards/authorization.guard';
 
-const components: any[] = [
+const providers: any[] = [
     AuthorizationGuard,
     ErentoLogger,
-    RequestMiddelware,
+    RequestMiddleware,
 ];
 
 @Global()
 @Module({
     imports: [],
     controllers: [],
-    components: [...components],
-    exports: [...components],
+    providers: [...providers],
+    exports: [...providers],
 })
 export class CommonModule {}

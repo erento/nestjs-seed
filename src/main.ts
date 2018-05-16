@@ -2,7 +2,7 @@ import {NestFactory} from '@nestjs/core';
 import {INestApplication} from '@nestjs/common';
 import {ApplicationModule} from './app.module';
 import {registerBugsnagAndGetFilter} from './utils/bugsnag/bugsnag.helper';
-import {Environments} from './environments/environmets';
+import {Environments} from './environments/environments';
 import {CommonModule} from './common/common.module';
 import {AuthorizationGuard} from './common/guards/authorization.guard';
 

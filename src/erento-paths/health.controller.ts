@@ -1,7 +1,7 @@
 import {Controller, Get, HttpException, HttpStatus} from '@nestjs/common';
 // tslint:disable-next-line match-default-export-name
 import axios, {AxiosPromise, AxiosResponse} from 'axios';
-import {Environments} from '../environments/environmets';
+import {Environments} from '../environments/environments';
 import {servicesToPing} from '../../health';
 
 @Controller('health')
