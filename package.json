@@ -10,40 +10,44 @@
     "url": "git+https://github.com/erento/x---service-slug---x.git"
   },
   "scripts": {
-    "build": "tsc && npm prune --json --production",
+    "build": "tsc --project tsconfig.prod.json",
+    "clean-dist": "rimraf dist",
     "lint": "tslint -c tslint.json --fix -e \"**/node_modules/**\" -p ./tsconfig.json",
     "lint-staged": "lint-staged",
-    "start": "node index.js",
-    "start:prod": "ENV=production node dist/main.js",
+    "postbuild": "npm prune --production",
+    "prebuild": "npm run clean-dist",
+    "start": "./dev-env.sh dev-server",
+    "start:prod": "ENV=production node dist/src/main.js",
     "test": "npm run test:single -- --watch",
-    "test:single": "ENV=test jest"
+    "test:single": "./dev-env.sh jest"
   },
   "dependencies": {
-    "@nestjs/common": "4.6.6",
-    "@nestjs/core": "4.6.6",
-    "@nestjs/microservices": "4.6.6",
-    "@nestjs/testing": "4.6.6",
-    "@nestjs/websockets": "4.6.6",
+    "@nestjs/common": "5.0.0",
+    "@nestjs/core": "5.0.0",
+    "@nestjs/microservices": "5.0.0",
+    "@nestjs/testing": "5.0.0",
+    "@nestjs/websockets": "5.0.0",
     "axios": "0.18.0",
     "bugsnag": "2.3.1",
     "cli-color": "1.2.0",
     "redis": "2.8.0",
     "reflect-metadata": "0.1.12",
-    "rxjs": "5.5.8",
+    "rxjs": "6.1.0",
     "typescript": "2.8.3"
   },
   "devDependencies": {
     "@types/cli-color": "0.3.29",
     "@types/jest": "22.2.3",
-    "@types/node": "10.0.4",
+    "@types/node": "10.1.0",
     "jest": "22.4.3",
     "lint-staged": "7.1.0",
     "nodemon": "1.17.4",
     "pre-commit": "1.2.2",
-    "ts-jest": "22.4.5",
+    "rimraf": "2.6.2",
+    "ts-jest": "22.4.6",
     "ts-node": "6.0.3",
     "tslint": "5.10.0",
-    "tslint-eslint-rules": "5.2.0"
+    "tslint-eslint-rules": "5.3.1"
   },
   "precommit": [
     "lint-staged"

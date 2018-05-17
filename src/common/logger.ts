@@ -1,7 +1,7 @@
 import * as bugsnag from 'bugsnag';
 import * as cliColor from 'cli-color';
-import {Component} from '@nestjs/common';
-import {Environments} from '../environments/environmets';
+import {Injectable} from '@nestjs/common';
+import {Environments} from '../environments/environments';
 
 const dateOptions: Intl.DateTimeFormatOptions = {
     ...{},
@@ -20,7 +20,7 @@ const log: Function = (...args: string[]): void => {
     lastUsedColor = colorMethod();
 };
 
-@Component()
+@Injectable()
 export class ErentoLogger {
     public log (...args: string[]): void {
         log(...args);

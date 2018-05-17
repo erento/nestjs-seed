@@ -1,4 +1,4 @@
-import {Environments} from './environmets';
+import {Environments} from './environments';
 import {EnvironmentType} from './environment.type';
 
 describe('Environments', () => {

@@ -1,6 +1,15 @@
 import {ExecutionContext} from '@nestjs/common';
 import {AuthorizationGuard} from './authorization.guard';
 
+const getExecutionContext: (req: any) => ExecutionContext = (req: any): ExecutionContext => {
+    return <any> {
+        switchToHttp: (): any => {
+            return {getRequest: (): any => req};
+        },
+        handler: {},
+    };
+};
+
 describe('Authorization Guard', () => {
     it('Should authorize when token is not passed', () => {
         const reflector: any = jest.fn();
@@ -8,7 +17,7 @@ describe('Authorization Guard', () => {
         const req: Request = <any> {
             headers: {},
         };
-        expect(new AuthorizationGuard({get: reflector}).canActivate(req, <ExecutionContext> {handler: {}})).toBe(true);
+        expect(new AuthorizationGuard({get: reflector}).canActivate(getExecutionContext(req))).toBe(true);
     });
 
     it('Should authorize when token is passed and matches req header', () => {
@@ -19,7 +28,7 @@ describe('Authorization Guard', () => {
         };
         const reflector: any = jest.fn();
         reflector.mockReturnValueOnce('service');
-        expect(new AuthorizationGuard({get: reflector}).canActivate(req, <ExecutionContext> {handler: {}})).toBe(true);
+        expect(new AuthorizationGuard({get: reflector}).canActivate(getExecutionContext(req))).toBe(true);
     });
 
     it('Should authorize when req header is passed but no requirements needed', () => {
@@ -29,7 +38,7 @@ describe('Authorization Guard', () => {
             },
         };
         const reflector: any = jest.fn().mockReturnValueOnce(undefined);
-        expect(new AuthorizationGuard({get: reflector}).canActivate(req, <ExecutionContext> {handler: {}})).toBe(true);
+        expect(new AuthorizationGuard({get: reflector}).canActivate(getExecutionContext(req))).toBe(true);
     });
 
     it('Should not authorize when token does not matches req header', () => {
@@ -40,9 +49,8 @@ describe('Authorization Guard', () => {
         };
         const reflector: any = jest.fn();
         reflector.mockReturnValueOnce('not matching');
-        expect(
-            () => new AuthorizationGuard({get: reflector}).canActivate(req, <ExecutionContext> {handler: {}}),
-        ).toThrowErrorMatchingSnapshot();
+        expect(() => new AuthorizationGuard({get: reflector}).canActivate(getExecutionContext(req)))
+            .toThrowErrorMatchingSnapshot();
     });
 
     it('Should not authorize when no req header is passed', () => {
@@ -51,8 +59,7 @@ describe('Authorization Guard', () => {
         };
         const reflector: any = jest.fn();
         reflector.mockReturnValueOnce('not matching');
-        expect(
-            () => new AuthorizationGuard({get: reflector}).canActivate(req, <ExecutionContext> {handler: {}}),
-        ).toThrowErrorMatchingSnapshot();
+        expect(() => new AuthorizationGuard({get: reflector}).canActivate(getExecutionContext(req)))
+            .toThrowErrorMatchingSnapshot();
     });
 });
