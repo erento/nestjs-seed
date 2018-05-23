@@ -1,23 +1,7 @@
-# x---service-name---x Service
+# Nest JS seed project
 
-## Basic commands
+## How to create a project:
 
-- build `npm run build` will generate JS files to `/dist`. Run production build with `npm run start:prod`
-- run in dev mode: `npm start`
-- tests: `npm t`
-
-## Tests
-
-Tests are written in Jest.
-
-## Usage
-
-### Authorization
-
-```typescript
-class MyClass {
-    @Get()
-    @Auth() // you can provide also a key to authorize to e.g.: @Auth(AuthorizationType.service)
-    getUser () { ... }
-}
-```
+1. Clone this seed repository to folder with desired service name.
+2. Run `./prepare.sh`
+3. Add remote and push `:)`
