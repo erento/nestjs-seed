@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`utils buffer create with wrong data 1`] = `"Cannot create a buffer."`;
+
+exports[`utils buffer create with wrong data 2`] = `"Cannot create a buffer."`;
+
+exports[`utils object copy 1`] = `
+Object {
+  "a": Object {
+    "a": 1,
+  },
+  "b": Object {
+    "b": 1,
+  },
+  "c": 1,
+}
+`;
+
+exports[`utils object copy 2`] = `
+Object {
+  "a": Object {
+    "a": 1,
+  },
+  "b": Object {
+    "b": 1,
+  },
+  "c": 1,
+}
+`;
