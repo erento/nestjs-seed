@@ -38,9 +38,9 @@
   "devDependencies": {
     "@types/cli-color": "0.3.29",
     "@types/jest": "22.2.3",
-    "@types/node": "10.1.0",
-    "jest": "22.4.3",
-    "lint-staged": "7.1.0",
+    "@types/node": "10.1.2",
+    "jest": "22.4.4",
+    "lint-staged": "7.1.2",
     "nodemon": "1.17.4",
     "pre-commit": "1.2.2",
     "rimraf": "2.6.2",
