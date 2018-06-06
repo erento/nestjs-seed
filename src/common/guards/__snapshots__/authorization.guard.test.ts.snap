@@ -1,8 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Authorization Guard Should not authorize when array of tokens does not matches req header 1`] = `
+Object {
+  "error": "Not Authorized",
+  "reason": "Provided token is \\"service\\"",
+  "statusCode": 401,
+}
+`;
+
 exports[`Authorization Guard Should not authorize when no req header is passed 1`] = `
 Object {
   "error": "Not Authorized",
+  "reason": "Provided token is \\"undefined\\"",
   "statusCode": 401,
 }
 `;
@@ -10,6 +19,7 @@ Object {
 exports[`Authorization Guard Should not authorize when token does not matches req header 1`] = `
 Object {
   "error": "Not Authorized",
+  "reason": "Provided token is \\"service\\"",
   "statusCode": 401,
 }
 `;

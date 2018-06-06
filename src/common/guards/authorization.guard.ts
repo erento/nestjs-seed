@@ -12,14 +12,19 @@ export class AuthorizationGuard implements CanActivate {
         const req: Request = context.switchToHttp().getRequest();
         const {handler}: any = context;
 
-        const tokenValue: string = this.reflector.get<string>(TOKEN, handler);
+        const tokenValue: string | string[] = this.reflector.get<string | string[]>(TOKEN, handler);
+        const tokenValueList: string[] = Array.isArray(tokenValue) ? tokenValue : [tokenValue];
+        const requestTokenValue: string = req.headers[TOKEN_ROLE_HEADER];
 
-        if (tokenValue === undefined || (tokenValue !== undefined && req.headers[TOKEN_ROLE_HEADER] === tokenValue)) {
+        if (tokenValue === undefined || (tokenValue !== undefined && tokenValueList.indexOf(requestTokenValue) !== -1)) {
             return true;
         }
 
+        console.log(`Required token value "${tokenValue}", given value "${requestTokenValue}"`);
+
         throw new HttpException({
             error: 'Not Authorized',
+            reason: `Provided token is "${requestTokenValue}"`,
             statusCode: HttpStatus.UNAUTHORIZED,
         }, HttpStatus.UNAUTHORIZED);
     }

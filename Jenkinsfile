@@ -5,7 +5,7 @@ if (env.BRANCH_NAME != "master") {
 }
 
 imageName = "${projectBaseName}:${appVersion}"
-buildServiceImage = docker.image('node:9.10')
+buildServiceImage = docker.image('node:10.1')
 
 node {
     stage("checkout") {
@@ -15,7 +15,8 @@ node {
 
     stage("prepare dependencies") {
         buildServiceImage.inside('--tmpfs /home/jenkins:size=512M -e HOME=/home/jenkins') {
-            sh(script: "npm run install")
+            sh(script: "npm install")
+            sh(script: "npm run clean-dist")
         }
         milestone(label: 'dependencies ready')
     }
