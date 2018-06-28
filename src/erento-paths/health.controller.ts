@@ -7,11 +7,12 @@ import {servicesToPing} from '../../health';
 @Controller('health')
 export class HealthController {
     @Get()
-    public async get (): Promise<object> {
+    public async get (): Promise<{environment: string, health: object, version: string}> {
         try {
             return {
-                version: Environments.getVersion(),
+                environment: Environments.getEnv(),
                 health: await this.isHealthy(),
+                version: Environments.getVersion(),
             };
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.SERVICE_UNAVAILABLE);

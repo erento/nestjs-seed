@@ -2,15 +2,17 @@ import {EnvironmentType} from './environment.type';
 
 export class Environments {
     public static getEnv (): EnvironmentType {
-        if (process.env.ENV === EnvironmentType.PROD) {
-            return EnvironmentType.PROD;
-        }
-
-        return process.env.ENV === EnvironmentType.TEST ? EnvironmentType.TEST : EnvironmentType.DEV;
+        return process.env.NODE_ENV === EnvironmentType.PROD ?
+            EnvironmentType.PROD :
+            process.env.NODE_ENV === EnvironmentType.TEST ?
+                EnvironmentType.TEST :
+                process.env.NODE_ENV === EnvironmentType.BETA ?
+                    EnvironmentType.BETA :
+                    EnvironmentType.DEV;
     }
 
     public static isProd (): boolean {
-        return this.getEnv() === EnvironmentType.PROD;
+        return this.getEnv() === EnvironmentType.PROD || this.getEnv() === EnvironmentType.BETA;
     }
 
     public static isDev (): boolean {
