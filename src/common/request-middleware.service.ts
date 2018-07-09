@@ -11,18 +11,22 @@ const filteredUrls: string[] = [
     '/favicon.ico',
 ];
 
+interface ExtendedRequest extends Request {
+    originalUrl: string;
+}
+
 @Injectable()
 export class RequestMiddleware implements NestMiddleware {
     constructor (private readonly logger: ErentoLogger) {}
 
     public async resolve (): Promise<MiddlewareFunction> {
-        return async (req: Request, _res: any, next: any): Promise<any> => {
+        return async (req: ExtendedRequest, _res: any, next: any): Promise<any> => {
             if (filteredUrls.indexOf(req.url) !== -1) {
                 next();
                 return undefined;
             }
 
-            this.logger.log(req.url, req.mode);
+            this.logger.log(req.originalUrl, req.mode);
             next();
         };
     }
