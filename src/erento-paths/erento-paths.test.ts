@@ -2,9 +2,10 @@ import {PingController} from './ping.controller';
 import {HealthController} from './health.controller';
 
 describe('Erento paths', () => {
-    it('health', () => {
-        expect(new HealthController().get()).resolves.toEqual(
+    it('health', async () => {
+        await expect(new HealthController().get()).resolves.toEqual(
             {
+                environment: 'test',
                 health: {
                     databases: [],
                     services: [],
