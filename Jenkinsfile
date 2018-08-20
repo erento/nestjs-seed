@@ -5,7 +5,7 @@ if (env.BRANCH_NAME != "master") {
 }
 
 imageName = "${projectBaseName}:${appVersion}"
-buildServiceImage = docker.image('node:10.1')
+buildServiceImage = docker.image('node:10.9')
 
 node {
     stage("checkout") {
@@ -31,7 +31,6 @@ node {
     stage("build service") {
         buildServiceImage.inside('--tmpfs /home/jenkins:size=512M -e HOME=/home/jenkins') {
             sh(script: "npm run build")
-            sh(script: "rm -rf src")
         }
         milestone(label: 'service built')
     }
