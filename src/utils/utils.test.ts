@@ -1,4 +1,4 @@
-import {createBuffer, deepCopyObj} from './utils';
+import {arrayDifference, arrayIntersection, createBuffer, deepCopyObj} from './utils';
 
 describe('utils', () => {
     describe('buffer', () => {
@@ -14,6 +14,27 @@ describe('utils', () => {
             expect(createBuffer('not a base 64')).toBeInstanceOf(Buffer);
             expect(() => createBuffer(<any> null)).toThrowErrorMatchingSnapshot();
             expect(() => createBuffer(<any> undefined)).toThrowErrorMatchingSnapshot();
+        });
+    });
+
+    describe('array', () => {
+        test('difference', (): void => {
+            expect(arrayDifference(['a', 'b'], ['b', 'c'])).toEqual(['a', 'c']);
+            expect(arrayDifference(['a', 'b'], [])).toEqual(['a', 'b']);
+            expect(arrayDifference(['a', 'b'], ['a', 'b'])).toEqual([]);
+        });
+
+        test('intersection', (): void => {
+            expect(arrayIntersection(['a', 'b'], ['b', 'c'])).toEqual(['b']);
+            expect(arrayIntersection(['a', 'b'], ['c', 'd'])).toEqual([]);
+            expect(arrayIntersection([{a: 'a'}], [{a: 'a'}])).toEqual([]);
+
+            const value: any = {b: 'b'};
+            expect(arrayIntersection(['a', value, 'b'], [value, 'b'])).toEqual([value, 'b']);
+        });
+
+        test('intersection is unique', (): void => {
+            expect(arrayIntersection(['a', 12], ['c', 12, 'd', 12])).toEqual([12]);
         });
     });
 
