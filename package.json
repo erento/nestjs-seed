@@ -30,10 +30,12 @@
     "axios": "0.18.0",
     "bugsnag": "2.4.3",
     "cli-color": "1.2.0",
+    "express-http-context": "1.1.0",
     "json-stringify-safe": "5.0.1",
     "reflect-metadata": "0.1.12",
     "rxjs": "6.2.2",
-    "typescript": "2.8.3"
+    "typescript": "2.8.3",
+    "uuid": "3.3.2"
   },
   "devDependencies": {
     "@types/cli-color": "0.3.29",

@@ -1,3 +1,5 @@
+export const REQUEST_UNIQUE_ID_KEY: string = 'nestRequestUniqueId';
+
 // The place for environmental variables from kubernetes secrets.
 
 // EXAMPLE:
