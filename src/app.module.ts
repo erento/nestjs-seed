@@ -1,5 +1,5 @@
 import {Module, NestModule} from '@nestjs/common';
-import {MiddlewaresConsumer} from '@nestjs/common/interfaces/middlewares';
+import {MiddlewareConsumer} from '@nestjs/common/interfaces';
 import {AppController} from './app.controller';
 import {CommonModule} from './common/common.module';
 import {RequestMiddleware} from './common/request-middleware.service';
@@ -14,7 +14,7 @@ import {ErentoPathsModule} from './erento-paths/erento-paths.module';
     providers: [],
 })
 export class ApplicationModule implements NestModule {
-    public configure (consumer: MiddlewaresConsumer): void {
+    public configure (consumer: MiddlewareConsumer): void {
         consumer.apply(RequestMiddleware).forRoutes('*');
     }
 }
