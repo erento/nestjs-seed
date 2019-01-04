@@ -1,4 +1,9 @@
+import {Environments} from './environments/environments';
+
 export const REQUEST_UNIQUE_ID_KEY: string = 'nestRequestUniqueId';
+
+export const SERVICE_NAME: string = Environments.getPackageJson().name;
+export const USER_AGENT: string = `${SERVICE_NAME}@${Environments.getVersion()}`;
 
 // The place for environmental variables from kubernetes secrets.
 
