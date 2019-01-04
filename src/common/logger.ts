@@ -2,8 +2,8 @@ import {Injectable} from '@nestjs/common';
 import * as bugsnag from 'bugsnag';
 import chalk from 'chalk';
 import * as httpContext from 'express-http-context';
-import {Environments} from '../environments/environments';
 import {REQUEST_UNIQUE_ID_KEY} from '../env-const';
+import {Environments} from '../environments/environments';
 
 enum LoggerMethod {
     INFO = 'LOG',

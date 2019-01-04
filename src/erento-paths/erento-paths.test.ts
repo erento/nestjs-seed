@@ -1,5 +1,5 @@
-import {PingController} from './ping.controller';
 import {HealthController} from './health.controller';
+import {PingController} from './ping.controller';
 
 describe('Erento paths', () => {
     it('health', async () => {
