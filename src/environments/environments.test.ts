@@ -1,5 +1,5 @@
-import {Environments} from './environments';
 import {EnvironmentType} from './environment.type';
+import {Environments} from './environments';
 
 describe('Environments', () => {
     it('should determine environment correctly', () => {

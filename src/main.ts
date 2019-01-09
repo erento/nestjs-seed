@@ -1,15 +1,15 @@
-import {NestFactory} from '@nestjs/core';
 import {INestApplication} from '@nestjs/common';
+import {NestFactory} from '@nestjs/core';
 import Axios from 'axios';
 import * as bodyParser from 'body-parser';
-import * as uuidv4 from 'uuid/v4';
 import * as httpContext from 'express-http-context';
-import {REQUEST_UNIQUE_ID_KEY} from './env-const';
+import * as uuidv4 from 'uuid/v4';
 import {ApplicationModule} from './app.module';
-import {registerBugsnagAndGetFilter} from './utils/bugsnag/bugsnag.helper';
-import {Environments} from './environments/environments';
 import {CommonModule} from './common/common.module';
 import {AuthorizationGuard} from './common/guards/authorization.guard';
+import {REQUEST_UNIQUE_ID_KEY} from './env-const';
+import {Environments} from './environments/environments';
+import {registerBugsnagAndGetFilter} from './utils/bugsnag/bugsnag.helper';
 
 Axios.defaults.headers.common['user-agent'] = `x---service-slug---x@${Environments.getVersion()}`;
 

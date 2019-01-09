@@ -1,7 +1,7 @@
 import {Global, Module} from '@nestjs/common';
+import {AuthorizationGuard} from './guards/authorization.guard';
 import {ErentoLogger} from './logger';
 import {RequestMiddleware} from './request-middleware.service';
-import {AuthorizationGuard} from './guards/authorization.guard';
 
 const providers: any[] = [
     AuthorizationGuard,

@@ -1,13 +1,16 @@
 import {Controller, Get, HttpException, HttpStatus} from '@nestjs/common';
 // tslint:disable-next-line match-default-export-name
 import axios, {AxiosPromise, AxiosResponse} from 'axios';
-import {Environments} from '../environments/environments';
 import {servicesToPing} from '../../health';
+import {ErentoLogger} from '../common/logger';
+import {Environments} from '../environments/environments';
 
 @Controller('health')
 export class HealthController {
+    constructor (private readonly erentoLogger: ErentoLogger) {}
+
     @Get()
-    public async get (): Promise<{environment: string, health: object, version: string}> {
+    public async get (): Promise<{environment: string; health: object; version: string}> {
         try {
             return {
                 environment: Environments.getEnv(),
@@ -15,6 +18,7 @@ export class HealthController {
                 version: Environments.getVersion(),
             };
         } catch (e) {
+            this.erentoLogger.error(`Health failed. Original message: "${e.message}".`);
             throw new HttpException(e.message, HttpStatus.SERVICE_UNAVAILABLE);
         }
     }

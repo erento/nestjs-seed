@@ -1,4 +1,4 @@
-FROM node:10.9-alpine
+FROM node:11.6-alpine
 LABEL maintainer="developers@erento.com"
 
 COPY . /app

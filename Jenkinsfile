@@ -5,7 +5,7 @@ if (env.BRANCH_NAME != "master") {
 }
 
 imageName = "${projectBaseName}:${appVersion}"
-buildServiceImage = docker.image('node:10.9')
+buildServiceImage = docker.image('node:11.6')
 
 node {
     stage("checkout") {
