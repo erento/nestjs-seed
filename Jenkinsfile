@@ -42,7 +42,8 @@ node {
     }
 
     stage("deploy to beta") {
-        deploy(projectBaseName, imageName, "beta")
+        deploy(projectBaseName, imageName, "beta", "deploy", "gcs-repo/erento-app")
+        milestone(label: "deployed to beta")
     }
 }
 
@@ -60,8 +61,8 @@ if (env.BRANCH_NAME == "master") {
         }
 
         node {
-            //deploy regularly as pod in k8s
-            deploy(projectBaseName, imageName, "production")
+            deploy(projectBaseName, imageName, "production", "deploy", "gcs-repo/erento-app")
+            milestone(label: "deployed to production")
         }
     }
 }
