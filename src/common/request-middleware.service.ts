@@ -17,16 +17,23 @@ interface ExtendedRequest extends Request {
 
 @Injectable()
 export class RequestMiddleware implements NestMiddleware {
-    constructor (private readonly logger: ErentoLogger) {}
+    constructor (private readonly erentoLogger: ErentoLogger) {}
 
     public async resolve (): Promise<MiddlewareFunction> {
-        return async (req: ExtendedRequest, _res: any, next: any): Promise<any> => {
+        return async (req: ExtendedRequest, res: any, next: any): Promise<any> => {
             if (filteredUrls.indexOf(req.url) !== -1) {
                 next();
                 return undefined;
             }
 
-            this.logger.log(req.originalUrl, req.mode);
+            const startHrTime: [number, number] = process.hrtime();
+            res.on('finish', (): void => {
+                const elapsedHrTime: [number, number] = process.hrtime(startHrTime);
+                const elapsedTimeInMs: number = elapsedHrTime[0] * 1e3 + elapsedHrTime[1] / 1e6;
+                this.erentoLogger.log(`Route finished: ${res.statusCode}, execution time ${elapsedTimeInMs}ms`);
+            });
+
+            this.erentoLogger.log(`Route started: ${req.method} ${req.originalUrl}`);
             next();
         };
     }

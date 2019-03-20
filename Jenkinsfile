@@ -5,7 +5,7 @@ if (env.BRANCH_NAME != "master") {
 }
 
 imageName = "${projectBaseName}:${appVersion}"
-buildServiceImage = docker.image('node:11.6')
+buildServiceImage = docker.image('node:11.10')
 
 node {
     stage("checkout") {
@@ -42,24 +42,27 @@ node {
     }
 
     stage("deploy to beta") {
-        deploy(projectBaseName, imageName, "beta")
+        deploy(projectBaseName, imageName, "beta", "deploy", "gcs-repo/erento-app")
+        milestone(label: "deployed to beta")
     }
+}
 
-    if (env.BRANCH_NAME == "master") {
-        stage('master to production') {
-            milestone(label: 'awaiting deploy to prod')
+if (env.BRANCH_NAME == "master") {
+    stage('master to production') {
+        milestone(label: 'awaiting deploy to prod')
 
-            try {
-                input(message: 'Deploy to production?', ok: 'Deploy')
-            } catch (err) {
-                def user = err.getCauses()[0].getUser()
-                echo "Aborted by: [${user}]"
-                currentBuild.result = 'NOT_BUILT'
-                throw err
-            }
+        try {
+            input(message: 'Deploy to production?', ok: 'Deploy')
+        } catch (err) {
+            def user = err.getCauses()[0].getUser()
+            echo "Aborted by: [${user}]"
+            currentBuild.result = 'NOT_BUILT'
+            throw err
+        }
 
-            //deploy regularly as pod in k8s
-            deploy(projectBaseName, imageName, "production")
+        node {
+            deploy(projectBaseName, imageName, "production", "deploy", "gcs-repo/erento-app")
+            milestone(label: "deployed to production")
         }
     }
 }

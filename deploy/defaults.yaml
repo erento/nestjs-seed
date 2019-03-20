@@ -1,0 +1,19 @@
+app:
+  name: x---service-slug---x
+  type: api
+  labels:
+    app: x---service-slug---x
+    role: api
+  resources:
+    requests:
+      cpu: 100m
+      memory: 300Mi
+    limits:
+      cpu: 200m
+      memory: 500Mi
+  env:
+    - name: NODE_ENV
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.namespace
