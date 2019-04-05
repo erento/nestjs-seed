@@ -27,13 +27,14 @@ export class RequestMiddleware implements NestMiddleware {
             }
 
             const startHrTime: [number, number] = process.hrtime();
+            const requestIdentifier: string = `${req.method} ${req.originalUrl}`;
             res.on('finish', (): void => {
                 const elapsedHrTime: [number, number] = process.hrtime(startHrTime);
                 const elapsedTimeInMs: number = elapsedHrTime[0] * 1e3 + elapsedHrTime[1] / 1e6;
-                this.erentoLogger.log(`Route finished: ${res.statusCode}, execution time ${elapsedTimeInMs}ms`);
+                this.erentoLogger.log(`Route finished: ${requestIdentifier} ${res.statusCode}, execution time ${elapsedTimeInMs}ms`);
             });
 
-            this.erentoLogger.log(`Route started: ${req.method} ${req.originalUrl}`);
+            this.erentoLogger.log(`Route started: ${requestIdentifier}`);
             next();
         };
     }
