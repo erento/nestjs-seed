@@ -15,7 +15,7 @@ describe('Authorization Guard', () => {
         const req: Request = <any> {
             headers: {},
         };
-        expect(new AuthorizationGuard({get: reflector}).canActivate(getExecutionContext(req))).toBe(true);
+        expect(new AuthorizationGuard(<any> {get: reflector}).canActivate(getExecutionContext(req))).toBe(true);
     });
 
     it('Should authorize when token is passed and matches req header', () => {
@@ -26,7 +26,7 @@ describe('Authorization Guard', () => {
         };
         const reflector: any = jest.fn();
         reflector.mockReturnValueOnce('service');
-        expect(new AuthorizationGuard({get: reflector}).canActivate(getExecutionContext(req))).toBe(true);
+        expect(new AuthorizationGuard(<any> {get: reflector}).canActivate(getExecutionContext(req))).toBe(true);
     });
 
     it('Should authorize when token is passed as an array and matches req header', () => {
@@ -37,7 +37,7 @@ describe('Authorization Guard', () => {
         };
         const reflector: any = jest.fn();
         reflector.mockReturnValueOnce(['x', 'y', 'service', 'z']);
-        expect(new AuthorizationGuard({get: reflector}).canActivate(getExecutionContext(req))).toBe(true);
+        expect(new AuthorizationGuard(<any> {get: reflector}).canActivate(getExecutionContext(req))).toBe(true);
     });
 
     it('Should authorize when req header is passed but no requirements needed', () => {
@@ -47,7 +47,7 @@ describe('Authorization Guard', () => {
             },
         };
         const reflector: any = jest.fn().mockReturnValueOnce(undefined);
-        expect(new AuthorizationGuard({get: reflector}).canActivate(getExecutionContext(req))).toBe(true);
+        expect(new AuthorizationGuard(<any> {get: reflector}).canActivate(getExecutionContext(req))).toBe(true);
     });
 
     it('Should not authorize when token does not matches req header', () => {
@@ -58,7 +58,7 @@ describe('Authorization Guard', () => {
         };
         const reflector: any = jest.fn();
         reflector.mockReturnValueOnce('not matching');
-        expect(() => new AuthorizationGuard({get: reflector}).canActivate(getExecutionContext(req)))
+        expect(() => new AuthorizationGuard(<any> {get: reflector}).canActivate(getExecutionContext(req)))
             .toThrowErrorMatchingSnapshot();
     });
 
@@ -71,7 +71,7 @@ describe('Authorization Guard', () => {
         const reflector: any = jest.fn();
         reflector.mockReturnValueOnce(['not matching', 'not-matching-2']);
         expect(
-            () => new AuthorizationGuard({get: reflector}).canActivate(getExecutionContext(req)),
+            () => new AuthorizationGuard(<any> {get: reflector}).canActivate(getExecutionContext(req)),
         ).toThrowErrorMatchingSnapshot();
     });
 
@@ -81,7 +81,7 @@ describe('Authorization Guard', () => {
         };
         const reflector: any = jest.fn();
         reflector.mockReturnValueOnce('not matching');
-        expect(() => new AuthorizationGuard({get: reflector}).canActivate(getExecutionContext(req)))
+        expect(() => new AuthorizationGuard(<any> {get: reflector}).canActivate(getExecutionContext(req)))
             .toThrowErrorMatchingSnapshot();
     });
 });
