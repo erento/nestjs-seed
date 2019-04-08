@@ -12,7 +12,6 @@ export class ErentoPathsModule {
     public static forRoot (): DynamicModule {
         return {
             module: ErentoPathsModule,
-            components: [],
         };
     }
 }
