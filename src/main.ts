@@ -1,5 +1,6 @@
 import {INestApplication} from '@nestjs/common';
 import {NestFactory} from '@nestjs/core';
+import {NestExpressApplication} from '@nestjs/platform-express';
 import Axios from 'axios';
 import * as bodyParser from 'body-parser';
 import * as httpContext from 'express-http-context';
@@ -14,7 +15,7 @@ import {registerBugsnagAndGetFilter} from './utils/bugsnag/bugsnag.helper';
 Axios.defaults.headers.common['user-agent'] = `x---service-slug---x@${Environments.getVersion()}`;
 
 async function bootstrap (): Promise<any> {
-    const app: INestApplication = await NestFactory.create(ApplicationModule, {
+    const app: INestApplication & NestExpressApplication = await NestFactory.create<NestExpressApplication>(ApplicationModule, {
         bodyParser: false,
     });
 
