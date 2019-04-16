@@ -6,7 +6,7 @@ interface ES7Array extends Array<any> {
     includes (value: any): boolean;
 }
 
-export const createBuffer = (body: string, encoding: string = 'base64'): Buffer => {
+export const createBuffer = (body: string, encoding: BufferEncoding = 'base64'): Buffer => {
     try {
         return Buffer.from(body, encoding);
     } catch {
