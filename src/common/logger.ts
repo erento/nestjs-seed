@@ -1,9 +1,10 @@
 import {Injectable} from '@nestjs/common';
-import * as bugsnag from 'bugsnag';
 import chalk from 'chalk';
 import * as httpContext from 'express-http-context';
 import {REQUEST_UNIQUE_ID_KEY} from '../env-const';
 import {Environments} from '../environments/environments';
+import {clearBreadcrumbs, getBreadcrumbs} from '../utils/bugsnag/breadcrumbs';
+import {bugsnagClient} from '../utils/bugsnag/bugsnag.helper';
 
 enum LoggerMethod {
     INFO = 'LOG',
@@ -61,7 +62,8 @@ export class ErentoLogger {
         const error: Error = err instanceof Error ? err : new Error(err);
         error.message = `${uniqueId}: ${error.message}`;
 
-        bugsnag.notify(error, {severity: 'warning', uniqueId});
+        bugsnagClient.notify(error, {severity: 'warning', metaData: {uniqueId, ...getBreadcrumbs()}});
+        clearBreadcrumbs();
         log(LoggerMethod.WARNING, uniqueId, error.message);
     }
 
@@ -70,11 +72,12 @@ export class ErentoLogger {
         const error: Error = err instanceof Error ? err : new Error(err);
         error.message = `${uniqueId}: ${error.message}`;
 
-        bugsnag.notify(error, {severity: 'error', context: trace ? trace : '', uniqueId});
+        bugsnagClient.notify(error, {severity: 'error', context: trace ? trace : '', metaData: {uniqueId, ...getBreadcrumbs()}});
+        clearBreadcrumbs();
         log(LoggerMethod.ERROR, uniqueId, error.message);
     }
 
-    private getUniqueKey (): string {
+    public getUniqueKey (): string {
         return (httpContext.get(REQUEST_UNIQUE_ID_KEY) || 'uniqueID') + ':';
     }
 }

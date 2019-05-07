@@ -9,16 +9,27 @@ import * as uuidv4 from 'uuid/v4';
 import {ApplicationModule} from './app.module';
 import {CommonModule} from './common/common.module';
 import {AuthorizationGuard} from './common/guards/authorization.guard';
-import {REQUEST_UNIQUE_ID_KEY} from './env-const';
+import {REQUEST_UNIQUE_ID_KEY, USER_AGENT} from './env-const';
 import {Environments} from './environments/environments';
-import {registerBugsnagAndGetFilter} from './utils/bugsnag/bugsnag.helper';
+import {BugsnagErrorHandlerFilter} from './utils/bugsnag/bugsnag-error-handler.filter';
+import {bugsnagClient, registerBugsnagAndGetFilter} from './utils/bugsnag/bugsnag.helper';
 
-Axios.defaults.headers.common['user-agent'] = `x---service-slug---x@${Environments.getVersion()}`;
+Axios.defaults.headers.common['user-agent'] = USER_AGENT;
 
 async function bootstrap (): Promise<any> {
     const app: INestApplication & NestExpressApplication = await NestFactory.create<NestExpressApplication>(ApplicationModule, {
         bodyParser: false,
     });
+
+    const bugsnagErrorHandlerFilter: BugsnagErrorHandlerFilter = registerBugsnagAndGetFilter({
+        apiKey: Environments.getBugsnagKey(),
+        appVersion: Environments.getVersion(),
+        releaseStage: Environments.getReleaseStage(),
+        packageJSON: jsonStringifySafe(Environments.getPackageJson()),
+    });
+
+    const middleware: {requestHandler: Function; errorHandler: Function} = bugsnagClient.getPlugin('express');
+    app.use(middleware.requestHandler);
 
     app.use(bodyParser.json());
 
@@ -32,14 +43,12 @@ async function bootstrap (): Promise<any> {
         next();
     });
 
-    app.useGlobalFilters(registerBugsnagAndGetFilter(Environments.getBugsnagKey(), {
-        appVersion: Environments.getVersion(),
-        releaseStage: Environments.getReleaseStage(),
-        packageJSON: jsonStringifySafe(Environments.getPackageJson()),
-    }));
+    app.useGlobalFilters(bugsnagErrorHandlerFilter);
 
     const guard: AuthorizationGuard = app.select<CommonModule>(CommonModule).get<AuthorizationGuard>(AuthorizationGuard);
     app.useGlobalGuards(guard);
+
+    app.use(middleware.errorHandler);
 
     await app.listen(3000);
 }

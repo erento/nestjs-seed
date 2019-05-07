@@ -1,6 +1,7 @@
 import {Environments} from './environments/environments';
 
 export const REQUEST_UNIQUE_ID_KEY: string = 'nestRequestUniqueId';
+export const REQUEST_UNIQUE_ID_BREADCRUMBS_KEY: string = 'nestRequestUniqueIdForBreadcrumbs';
 
 export const SERVICE_NAME: string = Environments.getPackageJson().name;
 export const USER_AGENT: string = `${SERVICE_NAME}@${Environments.getVersion()}`;

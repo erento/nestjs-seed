@@ -1,9 +1,6 @@
-import * as bugsnag from 'bugsnag';
+import bugsnag, {Bugsnag} from '@bugsnag/js';
+import bugsnagPluginExpress from '@bugsnag/plugin-express';
 import {BugsnagErrorHandlerFilter} from './bugsnag-error-handler.filter';
-
-const getNestFiler: Function = (bugsnagInstance: bugsnag.Bugsnag): BugsnagErrorHandlerFilter => new BugsnagErrorHandlerFilter(
-    bugsnagInstance,
-);
 
 export enum BugsnagSeverity {
     INFO = 'info',
@@ -11,8 +8,10 @@ export enum BugsnagSeverity {
     ERROR = 'error',
 }
 
-export function registerBugsnagAndGetFilter (bugsnagKey: string, bugsnagOptions: bugsnag.ConfigurationOptions): BugsnagErrorHandlerFilter {
-    const bugsnagInstance: bugsnag.Bugsnag = bugsnag.register(bugsnagKey, {
+export let bugsnagClient: Bugsnag.Client;
+
+export function registerBugsnagAndGetFilter (bugsnagOptions: Bugsnag.IConfig): BugsnagErrorHandlerFilter {
+    bugsnagClient = bugsnag({
         ...{
             logLevel: BugsnagSeverity.WARNING,
             autoNotify: true,
@@ -20,5 +19,7 @@ export function registerBugsnagAndGetFilter (bugsnagKey: string, bugsnagOptions:
         ...bugsnagOptions,
     });
 
-    return getNestFiler(bugsnagInstance);
+    bugsnagClient.use(bugsnagPluginExpress);
+
+    return new BugsnagErrorHandlerFilter();
 }
