@@ -14,11 +14,16 @@ export class AuthorizationGuard implements CanActivate {
         const req: Request = context.switchToHttp().getRequest();
         const {handler}: any = context;
 
-        const tokenValue: string | string[] = this.reflector.get<string | string[]>(TOKEN, handler);
+        const tokenValue: string | string[] | undefined = this.reflector.get<string | string[] | undefined>(TOKEN, handler);
+
+        if (tokenValue === undefined) {
+            return true;
+        }
+
         const tokenValueList: string[] = Array.isArray(tokenValue) ? tokenValue : [tokenValue];
         const requestTokenValue: string = req.headers[TOKEN_ROLE_HEADER];
 
-        if (tokenValue === undefined || (tokenValue !== undefined && tokenValueList.indexOf(requestTokenValue) !== -1)) {
+        if (tokenValueList.indexOf(requestTokenValue) !== -1) {
             return true;
         }
 

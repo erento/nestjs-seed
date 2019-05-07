@@ -248,7 +248,7 @@
         "switch-default": true,
         "switch-final-break": [true, "always"],
         "strict-boolean-expressions": false,
-        "strict-type-predicates": false, // enable after strictNullChecks in tsconfig
+        "strict-type-predicates": true,
         "ter-arrow-body-style": [
             true,
             "as-needed",
