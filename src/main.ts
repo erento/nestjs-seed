@@ -4,6 +4,7 @@ import {NestExpressApplication} from '@nestjs/platform-express';
 import Axios from 'axios';
 import * as bodyParser from 'body-parser';
 import * as httpContext from 'express-http-context';
+import * as jsonStringifySafe from 'json-stringify-safe';
 import * as uuidv4 from 'uuid/v4';
 import {ApplicationModule} from './app.module';
 import {CommonModule} from './common/common.module';
@@ -34,7 +35,7 @@ async function bootstrap (): Promise<any> {
     app.useGlobalFilters(registerBugsnagAndGetFilter(Environments.getBugsnagKey(), {
         appVersion: Environments.getVersion(),
         releaseStage: Environments.getReleaseStage(),
-        packageJSON: JSON.stringify(Environments.getPackageJson()),
+        packageJSON: jsonStringifySafe(Environments.getPackageJson()),
     }));
 
     const guard: AuthorizationGuard = app.select<CommonModule>(CommonModule).get<AuthorizationGuard>(AuthorizationGuard);

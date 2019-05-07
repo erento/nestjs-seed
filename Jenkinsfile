@@ -5,7 +5,7 @@ if (env.BRANCH_NAME != "master") {
 }
 
 imageName = "${projectBaseName}:${appVersion}"
-buildServiceImage = docker.image('node:11.10')
+buildServiceImage = docker.image('node:11.15')
 
 node {
     stage("checkout") {
@@ -21,11 +21,20 @@ node {
         milestone(label: 'dependencies ready')
     }
 
-    stage("tests") {
-        buildServiceImage.inside('--tmpfs /home/jenkins:size=512M -e HOME=/home/jenkins') {
-            sh(script: "npm run test:single")
-        }
-        milestone(label: 'tests completed')
+    stage("linting and unit tests") {
+        parallel(
+            "linting": {
+                buildServiceImage.inside('--tmpfs /home/jenkins:size=512M -e HOME=/home/jenkins') {
+                    sh(script: "npm run test:single")
+                }
+            },
+            "unit test": {
+                buildServiceImage.inside('--tmpfs /home/jenkins:size=512M -e HOME=/home/jenkins') {
+                    sh(script: "npm run lint")
+                }
+            }
+        )
+        milestone(label: "linting and unit tests complete")
     }
 
     stage("build service") {

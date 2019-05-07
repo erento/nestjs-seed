@@ -12,7 +12,8 @@
   "scripts": {
     "build": "tsc --project tsconfig.prod.json",
     "clean-dist": "rimraf dist",
-    "lint": "tslint -c tslint.json --fix -e \"**/node_modules/**\" -p ./tsconfig.json",
+    "lint": "tslint -c tslint.json -e \"**/node_modules/**\" -p ./tsconfig.json",
+    "lint:fix": "tslint -c tslint.json --fix -e \"**/node_modules/**\" -p ./tsconfig.json",
     "lint-staged": "lint-staged",
     "postbuild": "npm prune --production",
     "prebuild": "npm run clean-dist",
@@ -29,28 +30,28 @@
     "@nestjs/testing": "6.1.1",
     "@nestjs/websockets": "6.1.1",
     "axios": "0.18.0",
-    "body-parser": "1.18.3",
+    "body-parser": "1.19.0",
     "bugsnag": "2.4.3",
     "chalk": "2.4.2",
-    "express-http-context": "1.2.1",
+    "express-http-context": "1.2.2",
     "json-stringify-safe": "5.0.1",
     "reflect-metadata": "0.1.13",
-    "rxjs": "6.4.0",
-    "typescript": "3.4.3",
+    "rxjs": "6.5.1",
+    "typescript": "3.4.5",
     "uuid": "3.3.2"
   },
   "devDependencies": {
-    "@types/jest": "24.0.11",
+    "@types/jest": "24.0.12",
     "@types/json-stringify-safe": "5.0.0",
-    "@types/node": "11.13.4",
-    "jest": "24.7.1",
-    "lint-staged": "8.1.5",
-    "nodemon": "1.18.11",
+    "@types/node": "11.13.10",
+    "jest": "24.8.0",
+    "lint-staged": "8.1.6",
+    "nodemon": "1.19.0",
     "pre-commit": "1.2.2",
     "rimraf": "2.6.3",
     "ts-jest": "24.0.2",
     "ts-node": "8.1.0",
-    "tslint": "5.15.0",
+    "tslint": "5.16.0",
     "tslint-eslint-rules": "5.4.0"
   },
   "precommit": [
@@ -58,7 +59,7 @@
   ],
   "lint-staged": {
     "*.ts": [
-      "npm run lint",
+      "npm run lint:fix",
       "git add"
     ]
   },
