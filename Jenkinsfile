@@ -23,12 +23,12 @@ node {
 
     stage("linting and unit tests") {
         parallel(
-            "linting": {
+            "unit test": {
                 buildServiceImage.inside('--tmpfs /home/jenkins:size=512M -e HOME=/home/jenkins') {
                     sh(script: "npm run test:single")
                 }
             },
-            "unit test": {
+            "linting": {
                 buildServiceImage.inside('--tmpfs /home/jenkins:size=512M -e HOME=/home/jenkins') {
                     sh(script: "npm run lint")
                 }
