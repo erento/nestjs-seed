@@ -21,5 +21,5 @@ export function registerBugsnagAndGetFilter (bugsnagOptions: Bugsnag.IConfig): B
 
     bugsnagClient.use(bugsnagPluginExpress);
 
-    return new BugsnagErrorHandlerFilter();
+    return new BugsnagErrorHandlerFilter(bugsnagOptions && bugsnagOptions.logger ? bugsnagOptions.logger.error : undefined);
 }
