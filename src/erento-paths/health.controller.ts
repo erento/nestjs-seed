@@ -4,12 +4,14 @@ import axios, {AxiosPromise, AxiosResponse} from 'axios';
 import {servicesToPing} from '../../health';
 import {ErentoLogger} from '../common/logger';
 import {Environments} from '../environments/environments';
+import {PrivateCache} from '../utils/decorator.utils';
 
 @Controller('health')
 export class HealthController {
     constructor (private readonly erentoLogger: ErentoLogger) {}
 
     @Get()
+    @PrivateCache()
     public async get (): Promise<{environment: string; health: object; version: string}> {
         try {
             return {

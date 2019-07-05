@@ -9,6 +9,4 @@ RUN rm -rf src
 ARG appVersion=latest
 ENV APP_VERSION ${appVersion}
 
-USER nobody
-
-CMD ["npm", "run", "start:prod"]
+CMD ["node", "dist/src/main.js"]

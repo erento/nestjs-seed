@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {Injectable, LoggerService} from '@nestjs/common';
 import chalk from 'chalk';
 import * as httpContext from 'express-http-context';
 import {REQUEST_UNIQUE_ID_KEY} from '../env-const';
@@ -52,7 +52,7 @@ const log: Function = (method: LoggerMethod, uniqueId: string, ...args: string[]
 };
 
 @Injectable()
-export class ErentoLogger {
+export class ErentoLogger implements LoggerService {
     public log (...args: string[]): void {
         log(LoggerMethod.INFO, this.getUniqueKey(), ...args);
     }
