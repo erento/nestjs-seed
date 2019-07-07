@@ -58,11 +58,6 @@ FILES=$(find . -type f ! -name 'prepare.sh' ! -wholename '*node_modules*' -print
 echo ${FILES} | tr ' ' '\n'
 echo ${FILES} | xargs sed -i "" -e "s/$REPLACE_BUGSNAG_KEY/$SERVICE_BUGSNAG_API_KEY/g"
 
-echo ""
-echo "renaming deploy/kube files:"
-mv deploy/kube/nestjs-controller.json "deploy/kube/$SERVICE_SLUG-controller.json"
-mv deploy/kube/nestjs-service.json "deploy/kube/$SERVICE_SLUG-service.json"
-
 rm README.md
 mv _README.md README.md
 SEED_GIT_HASH=$(git rev-parse HEAD)
