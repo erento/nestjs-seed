@@ -3,7 +3,7 @@ import {HealthController} from './health.controller';
 import {PingController} from './ping.controller';
 
 jest.mock('../../health', () => {
-    return {servicesToMock: []};
+    return {servicesToPing: []};
 });
 
 describe('Erento paths', () => {
