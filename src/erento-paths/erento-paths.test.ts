@@ -2,6 +2,10 @@ import {ErentoLogger} from '../common/logger';
 import {HealthController} from './health.controller';
 import {PingController} from './ping.controller';
 
+jest.mock('../../health', () => {
+    return {servicesToPing: []};
+});
+
 describe('Erento paths', () => {
     const erentoLogger: ErentoLogger = <any> {
         error: jest.fn(),
