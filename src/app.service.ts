@@ -1,7 +1,9 @@
-import {Injectable, OnApplicationBootstrap, OnApplicationShutdown} from '@nestjs/common';
+import {Injectable, OnApplicationBootstrap, OnApplicationShutdown, ShutdownSignal} from '@nestjs/common';
 import {Server} from 'http';
 import {ErentoLogger} from './common/logger';
 import {GRACE_PERIOD, SHUTDOWN_TIMEOUT_PERIOD} from './env-const';
+import {EnvironmentType} from './environments/environment.type';
+import {Environments} from './environments/environments';
 
 @Injectable()
 export class AppService implements OnApplicationBootstrap, OnApplicationShutdown {
@@ -20,6 +22,10 @@ export class AppService implements OnApplicationBootstrap, OnApplicationShutdown
 
     public async onApplicationShutdown (signal: string): Promise<void> {
         this.erentoLogger.log(`Application shutdown: The "${signal}" event was fired.`);
+
+        if (ShutdownSignal.SIGINT === signal && Environments.getEnv() === EnvironmentType.DEV) {
+            return;
+        }
 
         if (this.server) {
             this.server.close((): void => {
