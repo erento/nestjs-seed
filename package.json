@@ -16,6 +16,7 @@
     "lint:fix": "tslint -c tslint.json --fix -e \"**/node_modules/**\" -p ./tsconfig.json",
     "lint-staged": "lint-staged",
     "clean-pre-prod": "npm prune --production",
+    "prebuild": "npm run clean-dist",
     "start": "./dev-env.sh dev-server",
     "start:prod": "echo \"needs to be run in Docker's CMD directly\" && false",
     "test": "./dev-env.sh jest --watch",
