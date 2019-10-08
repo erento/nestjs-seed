@@ -1,6 +1,6 @@
 nestJsPipeline {
     projectName = 'x---service-slug---x'
-    repositoryName = 'nestjs-seed'
+    repositoryName = 'x---service-slug---x'
     nodeImage = 'node:12.7'
     deployDir = 'deploy'
 }
