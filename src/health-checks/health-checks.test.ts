@@ -1,4 +1,4 @@
-import {ErentoLogger} from '../common/logger';
+import {Logger} from '../common/logger';
 import {HealthController} from './health.controller';
 import {PingController} from './ping.controller';
 
@@ -6,13 +6,13 @@ jest.mock('../../health', () => {
     return {servicesToPing: []};
 });
 
-describe('Erento paths', () => {
-    const erentoLogger: ErentoLogger = <any> {
+describe('Health Checks', () => {
+    const logger: Logger = <any> {
         error: jest.fn(),
     };
 
     it('health', async () => {
-        await expect(new HealthController(erentoLogger).get()).resolves.toEqual(
+        await expect(new HealthController(logger).get()).resolves.toEqual(
             {
                 environment: 'test',
                 health: {

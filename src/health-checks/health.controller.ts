@@ -2,13 +2,13 @@ import {Controller, Get, HttpException, HttpStatus} from '@nestjs/common';
 // tslint:disable-next-line match-default-export-name
 import axios, {AxiosPromise, AxiosResponse} from 'axios';
 import {servicesToPing} from '../../health';
-import {ErentoLogger} from '../common/logger';
+import {Logger} from '../common/logger';
 import {Environments} from '../environments/environments';
 import {PrivateCache} from '../utils/decorator.utils';
 
 @Controller('health')
 export class HealthController {
-    constructor (private readonly erentoLogger: ErentoLogger) {}
+    constructor (private readonly logger: Logger) {}
 
     @Get()
     @PrivateCache()
@@ -20,7 +20,7 @@ export class HealthController {
                 version: Environments.getVersion(),
             };
         } catch (e) {
-            this.erentoLogger.error(`Health failed. Original message: "${e.message}".`);
+            this.logger.error(`Health failed. Original message: "${e.message}".`);
             throw new HttpException(e.message, HttpStatus.SERVICE_UNAVAILABLE);
         }
     }

@@ -4,12 +4,12 @@ import {AppController} from './app.controller';
 import {AppService} from './app.service';
 import {CommonModule} from './common/common.module';
 import {RequestMiddleware} from './common/request-middleware.service';
-import {ErentoPathsModule} from './erento-paths/erento-paths.module';
+import {HealthChecksModule} from './health-checks/health-checks.module';
 
 @Module({
     imports: [
         CommonModule,
-        ErentoPathsModule.forRoot(),
+        HealthChecksModule.forRoot(),
     ],
     controllers: [AppController],
     providers: [AppService],
