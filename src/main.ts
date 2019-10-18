@@ -11,7 +11,7 @@ import {ApplicationModule} from './app.module';
 import {AppService} from './app.service';
 import {CommonModule} from './common/common.module';
 import {AuthorizationGuard} from './common/guards/authorization.guard';
-import {ErentoLogger} from './common/logger';
+import {Logger} from './common/logger';
 import {BUGSNAG_LOGGER_ENABLED, REQUEST_UNIQUE_ID_KEY, USER_AGENT} from './env-const';
 import {Environments} from './environments/environments';
 import {BugsnagErrorHandlerFilter} from './utils/bugsnag/bugsnag-error-handler.filter';
@@ -19,12 +19,12 @@ import {bugsnagClient, registerBugsnagAndGetFilter} from './utils/bugsnag/bugsna
 
 Axios.defaults.headers.common['user-agent'] = USER_AGENT;
 
-const erentoLogger: ErentoLogger = new ErentoLogger();
+const logger: Logger = new Logger();
 
 async function bootstrap (): Promise<any> {
     const app: INestApplication & NestExpressApplication = await NestFactory.create<NestExpressApplication>(ApplicationModule, {
         bodyParser: false,
-        logger: erentoLogger,
+        logger,
     });
 
     app.enableShutdownHooks([
@@ -46,10 +46,10 @@ async function bootstrap (): Promise<any> {
         releaseStage: Environments.getReleaseStage(),
         packageJSON: jsonStringifySafe(Environments.getPackageJson()),
         logger: BUGSNAG_LOGGER_ENABLED ? {
-            debug: erentoLogger.log.bind(erentoLogger),
-            info: erentoLogger.log.bind(erentoLogger),
-            warn: erentoLogger.warn.bind(erentoLogger),
-            error: erentoLogger.error.bind(erentoLogger),
+            debug: logger.log.bind(logger),
+            info: logger.log.bind(logger),
+            warn: logger.warn.bind(logger),
+            error: logger.error.bind(logger),
         } : null,
     });
 

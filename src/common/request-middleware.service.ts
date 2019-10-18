@@ -1,5 +1,5 @@
 import {Injectable, NestMiddleware} from '@nestjs/common';
-import {ErentoLogger} from './logger';
+import {Logger} from './logger';
 
 /**
  * List of URLs which will be skipped for logging.
@@ -16,7 +16,7 @@ interface ExtendedRequest extends Request {
 
 @Injectable()
 export class RequestMiddleware implements NestMiddleware {
-    constructor (private readonly erentoLogger: ErentoLogger) {}
+    constructor (private readonly logger: Logger) {}
 
     public async use (req: ExtendedRequest, res: any, next: any): Promise<void> {
         if (filteredUrls.indexOf(req.url) !== -1) {
@@ -29,10 +29,10 @@ export class RequestMiddleware implements NestMiddleware {
         res.on('finish', (): void => {
             const elapsedHrTime: [number, number] = process.hrtime(startHrTime);
             const elapsedTimeInMs: number = elapsedHrTime[0] * 1e3 + elapsedHrTime[1] / 1e6;
-            this.erentoLogger.log(`Route finished: ${requestIdentifier} ${res.statusCode}, execution time ${elapsedTimeInMs}ms`);
+            this.logger.log(`Route finished: ${requestIdentifier} ${res.statusCode}, execution time ${elapsedTimeInMs}ms`);
         });
 
-        this.erentoLogger.log(`Route started: ${requestIdentifier}`);
+        this.logger.log(`Route started: ${requestIdentifier}`);
         next();
     }
 }
