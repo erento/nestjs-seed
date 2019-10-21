@@ -8,10 +8,10 @@ import {PingController} from './ping.controller';
         PingController,
     ],
 })
-export class ErentoPathsModule {
+export class HealthChecksModule {
     public static forRoot (): DynamicModule {
         return {
-            module: ErentoPathsModule,
+            module: HealthChecksModule,
         };
     }
 }

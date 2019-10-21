@@ -52,7 +52,7 @@ const log: Function = (method: LoggerMethod, uniqueId: string, ...args: string[]
 };
 
 @Injectable()
-export class ErentoLogger implements LoggerService {
+export class Logger implements LoggerService {
     public log (...args: string[]): void {
         log(LoggerMethod.INFO, this.getUniqueKey(), ...args);
     }
