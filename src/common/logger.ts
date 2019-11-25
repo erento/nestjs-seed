@@ -62,9 +62,13 @@ export class Logger implements LoggerService {
         const error: Error = err instanceof Error ? err : new Error(err);
         error.message = `${uniqueId}: ${error.message}`;
 
-        bugsnagClient.notify(error, {severity: 'warning', metaData: {uniqueId, ...getBreadcrumbs()}});
-        clearBreadcrumbs();
         log(LoggerMethod.WARNING, uniqueId, error.message);
+        if (bugsnagClient) {
+            bugsnagClient.notify(error, {severity: 'warning', metaData: {uniqueId, ...getBreadcrumbs()}});
+            clearBreadcrumbs();
+        } else {
+            throw new Error('Bugsnag is not defined');
+        }
     }
 
     public error (err: any, trace?: string): void {
@@ -72,9 +76,13 @@ export class Logger implements LoggerService {
         const error: Error = err instanceof Error ? err : new Error(err);
         error.message = `${uniqueId}: ${error.message}`;
 
-        bugsnagClient.notify(error, {severity: 'error', context: trace ? trace : '', metaData: {uniqueId, ...getBreadcrumbs()}});
-        clearBreadcrumbs();
         log(LoggerMethod.ERROR, uniqueId, error.message);
+        if (bugsnagClient) {
+            bugsnagClient.notify(error, {severity: 'error', context: trace ? trace : '', metaData: {uniqueId, ...getBreadcrumbs()}});
+            clearBreadcrumbs();
+        } else {
+            throw new Error('Bugsnag is not defined');
+        }
     }
 
     public getUniqueKey (): string {
