@@ -44,19 +44,23 @@ echo ""
 echo "replacing slug:"
 FILES=$(find . -type f ! -name 'prepare.sh' ! -wholename '*node_modules*' -print0 | xargs -0 grep -l "$REPLACE_SLUG")
 echo ${FILES} | tr ' ' '\n'
-echo ${FILES} | xargs sed -i"" -e "s/$REPLACE_SLUG/$SERVICE_SLUG/g"
+echo ${FILES} | xargs sed -i".bak" -e "s/$REPLACE_SLUG/$SERVICE_SLUG/g"
 
 echo ""
 echo "replacing name:"
 FILES=$(find . -type f ! -name 'prepare.sh' ! -wholename '*node_modules*' -print0 | xargs -0 grep -l "$REPLACE_NAME")
 echo ${FILES} | tr ' ' '\n'
-echo ${FILES} | xargs sed -i"" -e "s/$REPLACE_NAME/$SERVICE_NAME/g"
+echo ${FILES} | xargs sed -i".bak" -e "s/$REPLACE_NAME/$SERVICE_NAME/g"
 
 echo ""
 echo "replacing bugsnag key:"
 FILES=$(find . -type f ! -name 'prepare.sh' ! -wholename '*node_modules*' -print0 | xargs -0 grep -l "$REPLACE_BUGSNAG_KEY")
 echo ${FILES} | tr ' ' '\n'
-echo ${FILES} | xargs sed -i"" -e "s/$REPLACE_BUGSNAG_KEY/$SERVICE_BUGSNAG_API_KEY/g"
+echo ${FILES} | xargs sed -i".bak" -e "s/$REPLACE_BUGSNAG_KEY/$SERVICE_BUGSNAG_API_KEY/g"
+
+echo ""
+echo "cleaning .bak files"
+find . -name "*.bak" -delete
 
 rm README.md
 mv _README.md README.md
