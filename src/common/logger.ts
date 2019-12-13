@@ -60,7 +60,7 @@ export class Logger implements LoggerService {
     public warn (err: any): void {
         const uniqueId: string = this.getUniqueKey();
         const error: Error = err instanceof Error ? err : new Error(err);
-        error.message = `${uniqueId}: ${error.message}`;
+        error.message = error.message.indexOf(uniqueId) !== -1 ? `${uniqueId}: ${error.message}` : error.message;
 
         log(LoggerMethod.WARNING, uniqueId, error.message);
         if (bugsnagClient) {
@@ -74,7 +74,7 @@ export class Logger implements LoggerService {
     public error (err: any, trace?: string): void {
         const uniqueId: string = this.getUniqueKey();
         const error: Error = err instanceof Error ? err : new Error(err);
-        error.message = `${uniqueId}: ${error.message}`;
+        error.message = error.message.indexOf(uniqueId) !== -1 ? `${uniqueId}: ${error.message}` : error.message;
 
         log(LoggerMethod.ERROR, uniqueId, error.message);
         if (bugsnagClient) {
