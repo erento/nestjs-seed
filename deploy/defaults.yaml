@@ -17,3 +17,14 @@ app:
         fieldRef:
           apiVersion: v1
           fieldPath: metadata.namespace
+
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+    - labelSelector:
+        matchExpressions:
+        - key: app
+          operator: In
+          values:
+          - x---service-slug---x
+      topologyKey: kubernetes.io/hostname
