@@ -1,7 +1,6 @@
 import {Module, NestModule} from '@nestjs/common';
 import {MiddlewareConsumer} from '@nestjs/common/interfaces';
 import {AppController} from './app.controller';
-import {AppService} from './app.service';
 import {CommonModule} from './common/common.module';
 import {RequestMiddleware} from './common/request-middleware.service';
 import {HealthChecksModule} from './health-checks/health-checks.module';
@@ -12,7 +11,6 @@ import {HealthChecksModule} from './health-checks/health-checks.module';
         HealthChecksModule.forRoot(),
     ],
     controllers: [AppController],
-    providers: [AppService],
 })
 export class ApplicationModule implements NestModule {
     public configure (consumer: MiddlewareConsumer): void {
