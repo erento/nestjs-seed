@@ -1,8 +1,8 @@
 import {arrayDifference, arrayIntersection, createBuffer, deepCopyObj} from './utils';
 
-describe('utils', () => {
-    describe('buffer', () => {
-        test('create', () => {
+describe('utils', (): void => {
+    describe('buffer', (): void => {
+        test('create', (): void => {
             const base64: string = 'YWhveQ==';
             const buffer: Buffer | undefined = createBuffer(base64);
 
@@ -10,14 +10,14 @@ describe('utils', () => {
             expect(buffer.toString()).toBe('ahoy');
         });
 
-        test('create with wrong data', () => {
+        test('create with wrong data', (): void => {
             expect(createBuffer('not a base 64')).toBeInstanceOf(Buffer);
-            expect(() => createBuffer(<any> null)).toThrowErrorMatchingSnapshot();
-            expect(() => createBuffer(<any> undefined)).toThrowErrorMatchingSnapshot();
+            expect((): Buffer => createBuffer(<any> null)).toThrowErrorMatchingSnapshot();
+            expect((): Buffer => createBuffer(<any> undefined)).toThrowErrorMatchingSnapshot();
         });
     });
 
-    describe('array', () => {
+    describe('array', (): void => {
         test('difference', (): void => {
             expect(arrayDifference(['a', 'b'], ['b', 'c'])).toEqual(['a', 'c']);
             expect(arrayDifference(['a', 'b'], [])).toEqual(['a', 'b']);
@@ -38,8 +38,8 @@ describe('utils', () => {
         });
     });
 
-    describe('object', () => {
-        test('copy', () => {
+    describe('object', (): void => {
+        test('copy', (): void => {
             const objA: any = {a: {a: 1}, b: {b: 1}, c: 1};
             const copy: any = deepCopyObj(objA);
             expect(copy).toMatchSnapshot();
@@ -47,7 +47,7 @@ describe('utils', () => {
             expect(copy).toMatchSnapshot();
         });
 
-        test('copy not an object', () => {
+        test('copy not an object', (): void => {
             expect(deepCopyObj(undefined)).toBeUndefined();
             expect(deepCopyObj(null)).toBeNull();
             expect(deepCopyObj(NaN)).toBeNull();

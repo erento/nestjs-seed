@@ -1,8 +1,8 @@
 import {EnvironmentType} from './environment.type';
 import {Environments} from './environments';
 
-describe('Environments', () => {
-    it('should determine environment correctly', () => {
+describe('Environments', (): void => {
+    it('should determine environment correctly', (): void => {
         const oldEnv: string | undefined = process.env.NODE_ENV;
 
         process.env.NODE_ENV = 'undefined-value';
@@ -38,7 +38,7 @@ describe('Environments', () => {
         process.env.NODE_ENV = oldEnv;
     });
 
-    it('should get keys', () => {
+    it('should get keys', (): void => {
         expect(Environments.getBugsnagKey()).toMatchSnapshot();
     });
 });

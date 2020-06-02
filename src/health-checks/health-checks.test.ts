@@ -2,16 +2,16 @@ import {Logger} from '../common/logger';
 import {HealthController} from './health.controller';
 import {PingController} from './ping.controller';
 
-jest.mock('../../health', () => {
+jest.mock('../../health', (): {servicesToPing: any[]} => {
     return {servicesToPing: []};
 });
 
-describe('Health Checks', () => {
+describe('Health Checks', (): void => {
     const logger: Logger = <any> {
         error: jest.fn(),
     };
 
-    it('health', async () => {
+    it('health', async (): Promise<void> => {
         await expect(new HealthController(logger).get()).resolves.toEqual(
             {
                 environment: 'test',
@@ -24,7 +24,7 @@ describe('Health Checks', () => {
         );
     });
 
-    it('ping', () => {
+    it('ping', (): void => {
         expect(new PingController().get()).toBe('pong');
     });
 });

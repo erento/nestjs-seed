@@ -8,8 +8,8 @@ const getExecutionContext: (req: any) => ExecutionContext = (req: any): Executio
     handler: {},
 };
 
-describe('Authorization Guard', () => {
-    it('Should authorize when token is not passed', () => {
+describe('Authorization Guard', (): void => {
+    it('Should authorize when token is not passed', (): void => {
         const reflector: any = jest.fn();
         reflector.mockReturnValueOnce(undefined);
         const req: Request = <any> {
@@ -18,7 +18,7 @@ describe('Authorization Guard', () => {
         expect(new AuthorizationGuard(<any> {get: reflector}).canActivate(getExecutionContext(req))).toBe(true);
     });
 
-    it('Should authorize when token is passed and matches req header', () => {
+    it('Should authorize when token is passed and matches req header', (): void => {
         const req: Request = <any> {
             headers: {
                 'x-token-role': 'service',
@@ -29,7 +29,7 @@ describe('Authorization Guard', () => {
         expect(new AuthorizationGuard(<any> {get: reflector}).canActivate(getExecutionContext(req))).toBe(true);
     });
 
-    it('Should authorize when token is passed as an array and matches req header', () => {
+    it('Should authorize when token is passed as an array and matches req header', (): void => {
         const req: Request = <any> {
             headers: {
                 'x-token-role': 'service',
@@ -40,7 +40,7 @@ describe('Authorization Guard', () => {
         expect(new AuthorizationGuard(<any> {get: reflector}).canActivate(getExecutionContext(req))).toBe(true);
     });
 
-    it('Should authorize when req header is passed but no requirements needed', () => {
+    it('Should authorize when req header is passed but no requirements needed', (): void => {
         const req: Request = <any> {
             headers: {
                 'x-token-role': 'service',
@@ -50,7 +50,7 @@ describe('Authorization Guard', () => {
         expect(new AuthorizationGuard(<any> {get: reflector}).canActivate(getExecutionContext(req))).toBe(true);
     });
 
-    it('Should not authorize when token does not matches req header', () => {
+    it('Should not authorize when token does not matches req header', (): void => {
         const req: Request = <any> {
             headers: {
                 'x-token-role': 'service',
@@ -58,11 +58,11 @@ describe('Authorization Guard', () => {
         };
         const reflector: any = jest.fn();
         reflector.mockReturnValueOnce('not matching');
-        expect(() => new AuthorizationGuard(<any> {get: reflector}).canActivate(getExecutionContext(req)))
+        expect((): boolean => new AuthorizationGuard(<any> {get: reflector}).canActivate(getExecutionContext(req)))
             .toThrowErrorMatchingSnapshot();
     });
 
-    it('Should not authorize when array of tokens does not matches req header', () => {
+    it('Should not authorize when array of tokens does not matches req header', (): void => {
         const req: Request = <any> {
             headers: {
                 'x-token-role': 'service',
@@ -71,17 +71,17 @@ describe('Authorization Guard', () => {
         const reflector: any = jest.fn();
         reflector.mockReturnValueOnce(['not matching', 'not-matching-2']);
         expect(
-            () => new AuthorizationGuard(<any> {get: reflector}).canActivate(getExecutionContext(req)),
+            (): boolean => new AuthorizationGuard(<any> {get: reflector}).canActivate(getExecutionContext(req)),
         ).toThrowErrorMatchingSnapshot();
     });
 
-    it('Should not authorize when no req header is passed', () => {
+    it('Should not authorize when no req header is passed', (): void => {
         const req: Request = <any> {
             headers: {},
         };
         const reflector: any = jest.fn();
         reflector.mockReturnValueOnce('not matching');
-        expect(() => new AuthorizationGuard(<any> {get: reflector}).canActivate(getExecutionContext(req)))
+        expect((): boolean => new AuthorizationGuard(<any> {get: reflector}).canActivate(getExecutionContext(req)))
             .toThrowErrorMatchingSnapshot();
     });
 });
