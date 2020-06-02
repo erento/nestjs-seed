@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@bugsnag/js": "6.5.2",
-    "@bugsnag/plugin-express": "6.4.1",
+    "@bugsnag/plugin-express": "6.5.1",
     "@nestjs/common": "7.1.2",
     "@nestjs/core": "7.1.2",
     "@nestjs/platform-express": "7.1.2",
