@@ -1,8 +1,6 @@
-import {Environments} from './environments/environments';
+import {Environments} from '@erento/nestjs-common';
 
-export const REQUEST_UNIQUE_ID_KEY: string = 'nestRequestUniqueId';
-export const REQUEST_UNIQUE_ID_BREADCRUMBS_KEY: string = 'nestRequestUniqueIdForBreadcrumbs';
-
+export const BUGSNAG_KEY: string = 'ba375572076032642b24bce412555761';
 export const BUGSNAG_LOGGER_ENABLED: boolean = process.env.BUGSNAG_LOGGER_ENABLED !== '0' && process.env.BUGSNAG_LOGGER_ENABLED !== 'false';
 
 export const GRACE_PERIOD: number = 20000; // default grace period in k8s is 30s so let's try to finish all requests in 20s

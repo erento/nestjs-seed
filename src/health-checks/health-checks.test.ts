@@ -1,4 +1,4 @@
-import {Logger} from '../common/logger';
+import {Logger} from '@erento/nestjs-common';
 import {HealthController} from './health.controller';
 import {PingController} from './ping.controller';
 
