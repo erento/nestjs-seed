@@ -31,7 +31,7 @@ async function bootstrap (): Promise<any> {
         ShutdownSignal.SIGSEGV,
         ShutdownSignal.SIGTERM,
     ]);
-    const bugsnagClient: BugsnagClient = app.get(BugsnagClient);
+    const bugsnagClient: BugsnagClient | undefined = app.get(BugsnagClient);
     if (!bugsnagClient) {
         throw new Error('BugsnagModule was not imported! Could not resolve BugsnagClient.');
     }
