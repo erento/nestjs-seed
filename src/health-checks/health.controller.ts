@@ -1,10 +1,8 @@
+import {Environments, Logger, PrivateCache} from '@erento/nestjs-common';
 import {Controller, Get, HttpException, HttpStatus} from '@nestjs/common';
 // tslint:disable-next-line match-default-export-name
 import axios, {AxiosPromise, AxiosResponse} from 'axios';
 import {servicesToPing} from '../../health';
-import {Logger} from '../common/logger';
-import {Environments} from '../environments/environments';
-import {PrivateCache} from '../utils/decorator.utils';
 
 @Controller('health')
 export class HealthController {

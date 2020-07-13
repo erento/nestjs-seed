@@ -1,10 +1,8 @@
+import {Environments, EnvironmentType, Logger} from '@erento/nestjs-common';
 import {Injectable, OnApplicationBootstrap, OnApplicationShutdown, ShutdownSignal} from '@nestjs/common';
 import {Server} from 'http';
 import {Observable, Subject} from 'rxjs';
 import {GRACE_PERIOD, SHUTDOWN_TIMEOUT_PERIOD} from '../env-const';
-import {EnvironmentType} from '../environments/environment.type';
-import {Environments} from '../environments/environments';
-import {Logger} from './logger';
 
 @Injectable()
 export class AppService implements OnApplicationBootstrap, OnApplicationShutdown {
