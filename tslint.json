@@ -47,7 +47,11 @@
         "function-constructor": true,
         "increment-decrement": false,
         "interface-over-type-literal": false,
-        "import-blacklist": true,
+        "import-blacklist": [
+            true, 
+            "sequelize/types", 
+            {"@nestjs/common": ["Logger"]}
+        ],
         "import-spacing": true,
         "indent": [
             true,
