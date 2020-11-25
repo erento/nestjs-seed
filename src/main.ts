@@ -1,4 +1,4 @@
-import {BugsnagClient, BugsnagErrorFilter, Logger} from '@erento/nestjs-common';
+import {BugsnagClient, BugsnagErrorFilter, Logger, runCronJobByName} from '@erento/nestjs-common';
 import {INestApplication, ShutdownSignal} from '@nestjs/common';
 import {NestFactory} from '@nestjs/core';
 import {NestExpressApplication} from '@nestjs/platform-express';
@@ -8,7 +8,7 @@ import * as httpContext from 'express-http-context';
 import {Server} from 'http';
 import {ApplicationModule} from './app.module';
 import {AppService} from './common/app.service';
-import {USER_AGENT} from './env-const';
+import {CRONJOB_NAME, USER_AGENT} from './env-const';
 
 Axios.defaults.headers.common['user-agent'] = USER_AGENT;
 const logger: Logger = new Logger();
@@ -34,6 +34,22 @@ async function bootstrap (): Promise<any> {
     const bugsnagClient: BugsnagClient | undefined = app.get(BugsnagClient);
     if (!bugsnagClient) {
         throw new Error('BugsnagModule was not imported! Could not resolve BugsnagClient.');
+    }
+
+    if (CRONJOB_NAME) {
+        app.get(AppService).onApplicationBootstrap();
+
+        logger.log(`Attempting to run CronJob ${CRONJOB_NAME}`);
+
+        await runCronJobByName(app, CRONJOB_NAME)
+            .catch((err: any): void => {
+                logger.error(`Failed to execute cron job! Error: ${err?.message}`, err?.stack);
+            });
+
+        logger.log(`CronJob finished - exiting`);
+        app.close();
+
+        return undefined;
     }
 
     const bugsnagMiddleware: ReturnType<BugsnagClient['getPlugin']> = bugsnagClient.getPlugin('express');

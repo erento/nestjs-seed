@@ -1,6 +1,6 @@
 import bugsnagPluginExpress from '@bugsnag/plugin-express';
-import {BugsnagModule, ElapsedTimeMiddleware, Environments, GlobalLoggerModule, UniqueIdMiddleware} from '@erento/nestjs-common';
-import {Logger, Module, NestModule} from '@nestjs/common';
+import {BugsnagModule, ElapsedTimeMiddleware, Environments, GlobalLoggerModule, Logger, UniqueIdMiddleware} from '@erento/nestjs-common';
+import {Module, NestModule} from '@nestjs/common';
 import {MiddlewareConsumer} from '@nestjs/common/interfaces';
 import {AppController} from './app.controller';
 import {CommonModule} from './common/common.module';

@@ -9,6 +9,8 @@ export const SHUTDOWN_TIMEOUT_PERIOD: number = 500;
 export const SERVICE_NAME: string = Environments.getPackageJson().name;
 export const USER_AGENT: string = `${SERVICE_NAME}@${Environments.getVersion()}`;
 
+export const CRONJOB_NAME: string | undefined = process.env.CRONJOB_NAME;
+
 // The place for environmental variables from kubernetes secrets.
 
 // EXAMPLE:
