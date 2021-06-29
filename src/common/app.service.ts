@@ -1,13 +1,13 @@
 import {Environments, EnvironmentType, Logger} from '@erento/nestjs-common';
 import {Injectable, OnApplicationBootstrap, OnApplicationShutdown, ShutdownSignal} from '@nestjs/common';
 import {Server} from 'http';
-import {Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {GRACE_PERIOD, SHUTDOWN_TIMEOUT_PERIOD} from '../env-const';
 
 @Injectable()
 export class AppService implements OnApplicationBootstrap, OnApplicationShutdown {
     private server: Server | undefined;
-    private started: Subject<boolean> = new Subject<boolean>();
+    private started: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
     private terminating: Subject<boolean> = new Subject<boolean>();
 
     constructor (private readonly logger: Logger) {}
