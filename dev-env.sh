@@ -30,6 +30,6 @@ fi
 if [ "$1" = "dev-server" ]; then
     CMD="./node_modules/.bin/nodemon index.js"
 fi
-
-ENV=$ENV_VALUE \
+# No need for GCLOUD_PROJECT variable in beta/prod (only locally or outside of GCP)
+GCLOUD_PROJECT="x---gcloud-project---x" \
     $CMD
