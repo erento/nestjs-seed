@@ -2,12 +2,12 @@
 set -e
 
 echo '
-#################################################################
-#                                                               #
-#  How to use it:                                               #
-#  ./prepare.sh "order-state" "Order State" "<BUGSNAG-API-KEY>" #
-#                                                               #
-#################################################################
+####################################################################################
+#                                                                                  #
+#  How to use it:                                                                  #
+#  ./prepare.sh "order-state" "Order State" "<BUGSNAG-API-KEY>" "<GCLOUD-PROJECT>" #
+#                                                                                  #
+####################################################################################
 '
 
 if [ "$1" == "" ] ; then
@@ -31,14 +31,18 @@ fi
 
 SERVICE_BUGSNAG_API_KEY="$3"
 
+GCLOUD_PROJECT="$4"
+
 echo "service"
 echo " - slug: "$SERVICE_SLUG
 echo " - name:" $SERVICE_NAME
 echo " - bugsnag API key:" $SERVICE_BUGSNAG_API_KEY
+echo " - GCloud Project:" $GCLOUD_PROJECT
 
 REPLACE_SLUG="x---service-slug---x"
 REPLACE_NAME="x---service-name---x"
 REPLACE_BUGSNAG_KEY="ba375572076032642b24bce412555761"
+REPLACE_GCLOUD_PROJECT="x---gcloud-project---x"
 
 echo ""
 echo "replacing slug:"
@@ -57,6 +61,12 @@ echo "replacing bugsnag key:"
 FILES=$(find . -type f ! -name 'prepare.sh' ! -wholename '*node_modules*' -print0 | xargs -0 grep -l "$REPLACE_BUGSNAG_KEY")
 echo ${FILES} | tr ' ' '\n'
 echo ${FILES} | xargs sed -i".bak" -e "s/$REPLACE_BUGSNAG_KEY/$SERVICE_BUGSNAG_API_KEY/g"
+
+echo ""
+echo "replacing gcloud project:"
+FILES=$(find . -type f ! -name 'prepare.sh' ! -wholename '*node_modules*' -print0 | xargs -0 grep -l "$REPLACE_GCLOUD_PROJECT")
+echo ${FILES} | tr ' ' '\n'
+echo ${FILES} | xargs sed -i".bak" -e "s/$REPLACE_GCLOUD_PROJECT/$GCLOUD_PROJECT/g"
 
 echo ""
 echo "cleaning .bak files"

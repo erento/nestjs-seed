@@ -1,5 +1,5 @@
 import bugsnagPluginExpress from '@bugsnag/plugin-express';
-import {BugsnagModule, ElapsedTimeMiddleware, Environments, GlobalLoggerModule, Logger, UniqueIdMiddleware} from '@erento/nestjs-common';
+import {BugsnagModule, ElapsedTimeMiddleware, Environments, GlobalLoggerModule, Logger, RequestMiddleware, UniqueIdMiddleware} from '@erento/nestjs-common';
 import {Module, NestModule} from '@nestjs/common';
 import {MiddlewareConsumer} from '@nestjs/common/interfaces';
 import {AppController} from './app.controller';
@@ -31,6 +31,6 @@ const logger: Logger = new Logger();
 })
 export class ApplicationModule implements NestModule {
     public configure (consumer: MiddlewareConsumer): void {
-        consumer.apply(UniqueIdMiddleware, ElapsedTimeMiddleware).forRoutes('*');
+        consumer.apply(UniqueIdMiddleware, ElapsedTimeMiddleware, RequestMiddleware).forRoutes('*');
     }
 }

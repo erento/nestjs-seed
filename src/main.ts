@@ -1,4 +1,7 @@
-import {BugsnagClient, BugsnagErrorFilter, Logger, runCronJobByName} from '@erento/nestjs-common';
+import {BugsnagClient, BugsnagErrorFilter, Environments, Logger, runCronJobByName} from '@erento/nestjs-common';
+import {start as profilerStart} from '@google-cloud/profiler';
+import {start as traceStart} from '@google-cloud/trace-agent';
+import {Config} from '@google-cloud/trace-agent/build/src/config';
 import {INestApplication, ShutdownSignal} from '@nestjs/common';
 import {NestFactory} from '@nestjs/core';
 import {NestExpressApplication} from '@nestjs/platform-express';
@@ -9,6 +12,16 @@ import {Server} from 'http';
 import {ApplicationModule} from './app.module';
 import {AppService} from './common/app.service';
 import {CRONJOB_NAME, USER_AGENT} from './env-const';
+
+const gcpMonitoringContext: Config = {
+    serviceContext: {
+        service: Environments.getPackageJson().name,
+        version: Environments.getVersion(),
+    },
+};
+
+traceStart(gcpMonitoringContext);
+profilerStart(gcpMonitoringContext);
 
 Axios.defaults.headers.common['user-agent'] = USER_AGENT;
 const logger: Logger = new Logger();
