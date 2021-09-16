@@ -31,6 +31,6 @@ const logger: Logger = new Logger();
 })
 export class ApplicationModule implements NestModule {
     public configure (consumer: MiddlewareConsumer): void {
-        consumer.apply(UniqueIdMiddleware, ElapsedTimeMiddleware, RequestMiddleware).forRoutes('*');
+        consumer.apply(RequestMiddleware, UniqueIdMiddleware, ElapsedTimeMiddleware).forRoutes('*');
     }
 }
