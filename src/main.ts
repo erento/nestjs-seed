@@ -1,3 +1,4 @@
+import {Server} from 'http';
 import {BugsnagClient, BugsnagErrorFilter, Environments, Logger, runCronJobByName} from '@erento/nestjs-common';
 import {start as profilerStart} from '@google-cloud/profiler';
 import {start as traceStart} from '@google-cloud/trace-agent';
@@ -8,7 +9,6 @@ import {NestExpressApplication} from '@nestjs/platform-express';
 import Axios from 'axios';
 import * as bodyParser from 'body-parser';
 import * as httpContext from 'express-http-context';
-import {Server} from 'http';
 import {ApplicationModule} from './app.module';
 import {AppService} from './common/app.service';
 import {CRONJOB_NAME, USER_AGENT} from './env-const';
