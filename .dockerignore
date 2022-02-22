@@ -12,4 +12,4 @@ nodemon.json
 package-lock.json
 tsconfig.json
 tsconfig.prod.json
-tslint.json
+.eslintrc.json

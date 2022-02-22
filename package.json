@@ -1,6 +1,11 @@
 {
   "name": "x---service-slug---x",
   "version": "1.0.0",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "engineStrict": true,
   "description": "x---service-name---x description",
   "license": "ISC",
   "author": "Erento GmbH <developers@erento.com> (https://www.erento.com)",
@@ -12,8 +17,8 @@
   "scripts": {
     "build": "tsc --project tsconfig.prod.json",
     "clean-dist": "rimraf dist",
-    "lint": "tslint -c tslint.json -e \"**/node_modules/**\" -p ./tsconfig.json",
-    "lint:fix": "tslint -c tslint.json --fix -e \"**/node_modules/**\" -p ./tsconfig.json",
+    "lint": "eslint -c .eslintrc.json .",
+    "lint:fix": "eslint --fix -c .eslintrc.json .",
     "lint-staged": "lint-staged",
     "clean-pre-prod": "npm prune --production",
     "prebuild": "npm run clean-dist",
