@@ -17,8 +17,8 @@
   "scripts": {
     "build": "tsc --project tsconfig.prod.json",
     "clean-dist": "rimraf dist",
-    "lint": "eslint -c .eslintrc.json .",
-    "lint:fix": "eslint --fix -c .eslintrc.json .",
+    "lint": "eslint -c .eslintrc.json",
+    "lint:fix": "eslint --fix -c .eslintrc.json",
     "lint-staged": "lint-staged",
     "clean-pre-prod": "npm prune --production",
     "prebuild": "npm run clean-dist",
