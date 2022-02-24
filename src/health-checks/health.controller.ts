@@ -23,17 +23,13 @@ export class HealthController {
     }
 
     private async isHealthy (): Promise<any> {
-        try {
-            const responses: AxiosResponse<string>[] = await this.pingServices(servicesToPing);
+        const responses: AxiosResponse<string>[] = await this.pingServices(servicesToPing);
 
-            return Promise.resolve({
-                databases: [],
-                services: responses.map((response: AxiosResponse<string>): string =>
-                    `${response.request.res.responseUrl} ${response.data}`),
-            });
-        } catch (e) {
-            return Promise.reject(e);
-        }
+        return {
+            databases: [],
+            services: responses.map((response: AxiosResponse<string>): string =>
+                `${response.request.res.responseUrl} ${response.data}`),
+        };
     }
 
     private pingServices (serviceNames: string[]): Promise<AxiosResponse<string>[]> {
