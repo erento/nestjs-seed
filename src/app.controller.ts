@@ -10,6 +10,6 @@ export class AppController {
     @Auth(AuthorizationType.service)
     public authorizationChecker (): any {
 
-        return 'request authorized';
+         return 'request authorized';
     }
 }
