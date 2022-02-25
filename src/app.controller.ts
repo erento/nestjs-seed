@@ -9,7 +9,6 @@ export class AppController {
     @Post('authorization-checker')
     @Auth(AuthorizationType.service)
     public authorizationChecker (): any {
-
         return 'request authorized';
     }
 }
