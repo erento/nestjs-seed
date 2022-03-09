@@ -1,14 +1,21 @@
-import {BugsnagClient, BugsnagErrorFilter, Environments, Logger, runCronJobByName} from '@erento/nestjs-common';
+import {Server} from 'http';
+import {
+    BugsnagClient,
+    BugsnagErrorFilter,
+    Environments,
+    interceptAxiosRequestWithRequestId,
+    Logger,
+    runCronJobByName,
+} from '@erento/nestjs-common';
 import {start as profilerStart} from '@google-cloud/profiler';
 import {start as traceStart} from '@google-cloud/trace-agent';
 import {Config} from '@google-cloud/trace-agent/build/src/config';
 import {INestApplication, ShutdownSignal} from '@nestjs/common';
 import {NestFactory} from '@nestjs/core';
 import {NestExpressApplication} from '@nestjs/platform-express';
-import Axios from 'axios';
+import axios from 'axios';
 import * as bodyParser from 'body-parser';
 import * as httpContext from 'express-http-context';
-import {Server} from 'http';
 import {ApplicationModule} from './app.module';
 import {AppService} from './common/app.service';
 import {CRONJOB_NAME, USER_AGENT} from './env-const';
@@ -23,7 +30,9 @@ const gcpMonitoringContext: Config = {
 traceStart(gcpMonitoringContext);
 profilerStart(gcpMonitoringContext);
 
-Axios.defaults.headers.common['user-agent'] = USER_AGENT;
+axios.defaults.headers.common['user-agent'] = USER_AGENT;
+interceptAxiosRequestWithRequestId();
+
 const logger: Logger = new Logger();
 
 async function bootstrap (): Promise<any> {

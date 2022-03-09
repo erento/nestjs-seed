@@ -1,6 +1,6 @@
+import {Server} from 'http';
 import {Environments, EnvironmentType, Logger} from '@erento/nestjs-common';
 import {Injectable, OnApplicationBootstrap, OnApplicationShutdown, ShutdownSignal} from '@nestjs/common';
-import {Server} from 'http';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {GRACE_PERIOD, SHUTDOWN_TIMEOUT_PERIOD} from '../env-const';
 
@@ -22,12 +22,12 @@ export class AppService implements OnApplicationBootstrap, OnApplicationShutdown
         this.logger.log(`Application bootstrapped successfully.`);
     }
 
-    public async onApplicationShutdown (signal: string): Promise<void> {
+    public onApplicationShutdown (signal: string): Promise<void> {
         this.logger.log(`Application shutdown: The "${signal}" event was fired.`);
         this.terminating.next(true);
 
         if (ShutdownSignal.SIGINT === signal && Environments.getEnv() === EnvironmentType.DEV) {
-            return;
+            return Promise.resolve();
         }
 
         if (this.server) {
@@ -38,7 +38,7 @@ export class AppService implements OnApplicationBootstrap, OnApplicationShutdown
 
         return new Promise((res: any): void => {
             let i: number = 0;
-            const interval: NodeJS.Timeout = setInterval(async (): Promise<void> => {
+            const interval: NodeJS.Timeout = setInterval((): void => {
                 this.logger.log(`Application shutdown: Waiting #${++i}`);
 
                 if (i >= GRACE_PERIOD / SHUTDOWN_TIMEOUT_PERIOD) {
@@ -46,7 +46,7 @@ export class AppService implements OnApplicationBootstrap, OnApplicationShutdown
                     try {
                         // here close your DB connections, e.g. as `await UserEntity.sequelize.close();`
                         this.logger.log(`DB connection closed.`);
-                    } catch (e) {
+                    } catch (e: any) {
                         this.logger.log(`Failed to close DB connection. Original message: "${e && e.message}".`);
                     }
 
