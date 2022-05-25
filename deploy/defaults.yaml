@@ -4,6 +4,9 @@ app:
   labels:
     app: x---service-slug---x
     role: api
+  volumeMounts:
+    - mountPath: /app/config/debugging-user
+      name: debugging-user
   resources:
     requests:
       cpu: 100m
@@ -17,5 +20,13 @@ app:
         fieldRef:
           apiVersion: v1
           fieldPath: metadata.namespace
+    - name: GOOGLE_APPLICATION_CREDENTIALS
+      value: "/app/config/debugging-user/credentials.json"
+
+volumes:
+  - name: debugging-user
+    secret:
+      defaultMode: 420
+      secretName: tf-debugging-user
 
 podAntiAffinity: true
