@@ -16,7 +16,7 @@ describe('Health Checks', (): void => {
             {
                 environment: 'test',
                 health: {
-                    databases: [],
+                    databases: {},
                     services: [],
                 },
                 version: 'development',
