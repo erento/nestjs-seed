@@ -2,6 +2,7 @@ import {Environments, Logger, PrivateCache} from '@erento/nestjs-common';
 import {Controller, Get, HttpException, HttpStatus} from '@nestjs/common';
 import axios, {AxiosPromise, AxiosResponse} from 'axios';
 import {servicesToPing} from '../../health';
+import {HealthDetails, HealthResponse} from './interface';
 
 @Controller('health')
 export class HealthController {
@@ -9,7 +10,7 @@ export class HealthController {
 
     @Get()
     @PrivateCache()
-    public async get (): Promise<{environment: string; health: object; version: string}> {
+    public async get (): Promise<HealthResponse> {
         try {
             return {
                 environment: Environments.getEnv(),
@@ -22,11 +23,11 @@ export class HealthController {
         }
     }
 
-    private async isHealthy (): Promise<any> {
+    private async isHealthy (): Promise<HealthDetails> {
         const responses: AxiosResponse<string>[] = await this.pingServices(servicesToPing);
 
         return {
-            databases: [],
+            databases: {},
             services: responses.map((response: AxiosResponse<string>): string =>
                 `${response.request.res.responseUrl} ${response.data}`),
         };
