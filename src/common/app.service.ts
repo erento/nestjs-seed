@@ -47,7 +47,7 @@ export class AppService implements OnApplicationBootstrap, OnApplicationShutdown
                         // here close your DB connections, e.g. as `await UserEntity.sequelize.close();`
                         this.logger.log(`DB connection closed.`);
                     } catch (e: any) {
-                        this.logger.log(`Failed to close DB connection. Original message: "${e && e.message}".`);
+                        this.logger.error(`Failed to close DB connection. Original message: "${e && e.message}".`);
                     }
 
                     this.logger.log(`Application shutdown: It should be already safe to exit, resolving!`);
