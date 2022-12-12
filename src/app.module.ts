@@ -1,5 +1,7 @@
 import bugsnagPluginExpress from '@bugsnag/plugin-express';
 import {
+    BasicAppService,
+    BUGSNAG_LOGGER_ENABLED,
     BugsnagModule,
     ElapsedTimeMiddleware,
     Environments,
@@ -11,8 +13,7 @@ import {
 import {Module, NestModule} from '@nestjs/common';
 import {MiddlewareConsumer} from '@nestjs/common/interfaces';
 import {AppController} from './app.controller';
-import {CommonModule} from './common/common.module';
-import {BUGSNAG_KEY, BUGSNAG_LOGGER_ENABLED} from './env-const';
+import {BUGSNAG_KEY} from './env-const';
 import {HealthChecksModule} from './health-checks/health-checks.module';
 
 const logger: Logger = new Logger();
@@ -24,21 +25,24 @@ const logger: Logger = new Logger();
             appVersion: Environments.getVersion(),
             releaseStage: Environments.getReleaseStage(),
             plugins: [bugsnagPluginExpress],
-            logger: BUGSNAG_LOGGER_ENABLED ? {
-                debug: logger.log.bind(logger),
-                info: logger.log.bind(logger),
-                warn: logger.warn.bind(logger),
-                error: logger.error.bind(logger),
-            } : null,
+            logger: BUGSNAG_LOGGER_ENABLED ?
+                {
+                    debug: logger.log.bind(logger),
+                    info: logger.log.bind(logger),
+                    warn: logger.warn.bind(logger),
+                    error: logger.error.bind(logger),
+                } :
+                null,
         }),
         GlobalLoggerModule,
-        CommonModule,
         HealthChecksModule.forRoot(),
     ],
+    providers: [BasicAppService],
     controllers: [AppController],
 })
 export class ApplicationModule implements NestModule {
     public configure (consumer: MiddlewareConsumer): void {
-        consumer.apply(RequestMiddleware, UniqueIdMiddleware, ElapsedTimeMiddleware).forRoutes('*');
+        consumer.apply(RequestMiddleware, UniqueIdMiddleware, ElapsedTimeMiddleware)
+            .forRoutes('*');
     }
 }
