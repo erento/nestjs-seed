@@ -1,12 +1,17 @@
 import {Environments, Logger, PrivateCache} from '@erento/nestjs-common';
+import {HttpService} from '@nestjs/axios';
 import {Controller, Get, HttpException, HttpStatus} from '@nestjs/common';
-import axios, {AxiosPromise, AxiosResponse} from 'axios';
+import {AxiosPromise, AxiosResponse} from 'axios';
+import {firstValueFrom} from 'rxjs';
 import {servicesToPing} from '../../health';
-import {HealthDetails, HealthResponse} from './interface';
+import {HealthDetails, HealthResponse} from './interfaces';
 
 @Controller('health')
 export class HealthController {
-    constructor (private readonly logger: Logger) {}
+    constructor (
+        private readonly httpService: HttpService,
+        private readonly logger: Logger,
+    ) {}
 
     @Get()
     @PrivateCache()
@@ -28,16 +33,15 @@ export class HealthController {
 
         return {
             databases: {},
-            services: responses.map((response: AxiosResponse<string>): string =>
-                `${response.request.res.responseUrl} ${response.data}`),
+            services: responses.map((response: AxiosResponse<string>): string => `${response.request.res.responseUrl} ${response.data}`),
         };
     }
 
     private pingServices (serviceNames: string[]): Promise<AxiosResponse<string>[]> {
         const list: AxiosPromise<string>[] = serviceNames.map(
-            (service: string): AxiosPromise<string> => axios.get<string>(`http://${service}/ping`),
+            (service: string): AxiosPromise<string> => firstValueFrom(this.httpService.get<string>(`http://${service}/ping`)),
         );
 
-        return axios.all(list);
+        return Promise.all(list);
     }
 }

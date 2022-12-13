@@ -1,37 +1,21 @@
 import {Server} from 'http';
 import {
+    BasicAppService,
     BugsnagClient,
     BugsnagErrorFilter,
-    Environments,
-    interceptAxiosRequestWithRequestId,
     Logger,
+    onApplicationInit,
     runCronJobByName,
 } from '@erento/nestjs-common';
-import {start as profilerStart} from '@google-cloud/profiler';
-import {start as traceStart} from '@google-cloud/trace-agent';
-import {Config} from '@google-cloud/trace-agent/build/src/config';
 import {INestApplication, ShutdownSignal} from '@nestjs/common';
 import {NestFactory} from '@nestjs/core';
 import {NestExpressApplication} from '@nestjs/platform-express';
-import axios from 'axios';
 import * as bodyParser from 'body-parser';
 import * as httpContext from 'express-http-context';
 import {ApplicationModule} from './app.module';
-import {AppService} from './common/app.service';
-import {CRONJOB_NAME, USER_AGENT} from './env-const';
+import {CRONJOB_NAME} from './env-const';
 
-const gcpMonitoringContext: Config = {
-    serviceContext: {
-        service: Environments.getPackageJson().name,
-        version: Environments.getVersion(),
-    },
-};
-
-traceStart(gcpMonitoringContext);
-profilerStart(gcpMonitoringContext);
-
-axios.defaults.headers.common['user-agent'] = USER_AGENT;
-interceptAxiosRequestWithRequestId();
+onApplicationInit();
 
 const logger: Logger = new Logger();
 
@@ -59,7 +43,8 @@ async function bootstrap (): Promise<any> {
     }
 
     if (CRONJOB_NAME) {
-        app.get(AppService).onApplicationBootstrap();
+        app.get(BasicAppService)
+            .onApplicationBootstrap();
 
         logger.log(`Attempting to run CronJob ${CRONJOB_NAME}`);
 
@@ -88,7 +73,8 @@ async function bootstrap (): Promise<any> {
     app.use(bugsnagMiddleware.errorHandler);
 
     const server: Server = await app.listen(3000);
-    app.get(AppService).setServer(server);
+    app.get(BasicAppService)
+        .setServer(server);
 }
 
 bootstrap();

@@ -1,23 +1,38 @@
 import {Logger} from '@erento/nestjs-common';
+import {HttpService} from '@nestjs/axios';
+import {of} from 'rxjs';
 import {HealthController} from './health.controller';
 import {PingController} from './ping.controller';
 
 jest.mock('../../health', (): {servicesToPing: any[]} => {
-    return {servicesToPing: []};
+    return {servicesToPing: [
+        'user',
+    ]};
 });
 
 describe('Health Checks', (): void => {
     const logger: Logger = <any> {
         error: jest.fn(),
     };
+    const httpService: HttpService = <any> {
+        get: jest.fn(),
+    };
 
     it('health', async (): Promise<void> => {
-        await expect(new HealthController(logger).get()).resolves.toEqual(
+        (<jest.Mock> httpService.get).mockReturnValue(of({
+            request: {res: {responseUrl: 'http://user'}},
+            data: 'pong',
+        }));
+
+        await expect(new HealthController(httpService, logger)
+            .get()).resolves.toEqual(
             {
                 environment: 'test',
                 health: {
                     databases: {},
-                    services: [],
+                    services: [
+                        'http://user pong',
+                    ],
                 },
                 version: 'development',
             },
@@ -25,6 +40,8 @@ describe('Health Checks', (): void => {
     });
 
     it('ping', (): void => {
-        expect(new PingController().get()).toBe('pong');
+        expect(new PingController()
+            .get())
+            .toBe('pong');
     });
 });
