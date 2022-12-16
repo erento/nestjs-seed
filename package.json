@@ -31,7 +31,7 @@
   "dependencies": {
     "@bugsnag/js": "7.18.0",
     "@bugsnag/plugin-express": "7.18.0",
-    "@erento/nestjs-common": "6.0.0",
+    "@erento/nestjs-common": "7.1.0",
     "@nestjs/axios": "1.0.0",
     "@nestjs/common": "9.2.1",
     "@nestjs/core": "9.2.1",
