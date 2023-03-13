@@ -2,36 +2,47 @@
 set -e
 
 echo '
-####################################################################################
-#                                                                                  #
-#  How to use it:                                                                  #
-#  ./prepare.sh "order-state" "Order State" "<BUGSNAG-API-KEY>" "<GCLOUD-PROJECT>" #
-#                                                                                  #
-####################################################################################
+################################################################################################
+#                                                                                              #
+#  How to use it:                                                                              #
+#  ./prepare.sh "<PROJECT>" "order-state" "Order State" "<BUGSNAG-API-KEY>" "<GCLOUD-PROJECT>" #
+#  Project can be erento or campanda                                                           #
+################################################################################################
 '
 
 if [ "$1" == "" ] ; then
-    echo "ERROR: Please specify slug of your service as first argument"
+    echo "ERROR: Please specify name of your project as first argument"
+    exit 1
+fi
+if [[ ! $1 =~ ^(erento|campanda)$ ]] ; then
+    echo "ERROR: Project name has to be erento or campanda"
     exit 1
 fi
 
-SERVICE_SLUG="$1"
+PROJECT="$1"
 
 if [ "$2" == "" ] ; then
-    echo "ERROR: Please specify name of your service as second argument"
+    echo "ERROR: Please specify slug of your service as second argument"
     exit 1
 fi
 
-SERVICE_NAME="$2"
+SERVICE_SLUG="$2"
 
 if [ "$3" == "" ] ; then
-    echo "ERROR: Please specify name of your service as second argument"
+    echo "ERROR: Please specify name of your service as third argument"
     exit 1
 fi
 
-SERVICE_BUGSNAG_API_KEY="$3"
+SERVICE_NAME="$3"
 
-GCLOUD_PROJECT="$4"
+if [ "$3" == "" ] ; then
+    echo "ERROR: Please specify name of your service as fourth argument"
+    exit 1
+fi
+
+SERVICE_BUGSNAG_API_KEY="$4"
+
+GCLOUD_PROJECT="$5"
 
 echo "service"
 echo " - slug: "$SERVICE_SLUG
@@ -74,6 +85,19 @@ find . -name "*.bak" -delete
 
 rm README.md
 mv _README.md README.md
+
+if [ $PROJECT == "campanda" ] ; then
+    rm Jenkinsfile
+    mv CampandaJenkinsfile Jenkinsfile
+    rm -rf ./deploy
+    mv ./campanda-deploy ./deploy
+fi
+
+if [ $PROJECT == "erento" ] ; then
+    rm CampandaJenkinsfile
+    rm -rf ./campanda-deploy
+fi
+
 SEED_GIT_HASH=$(git rev-parse HEAD)
 rm -rf .git/
 rm -rf prepare.sh

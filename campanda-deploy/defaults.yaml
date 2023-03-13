@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: x---service-slug---x
+  name: x---service-slug---x
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: x---service-slug---x
+  template:
+    metadata:
+      annotations:
+        config.linkerd.io/skip-outbound-ports: "3306"
+        linkerd.io/inject: enabled
+      labels:
+        io.kompose.service: x---service-slug---x
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: io.kompose.service
+                    operator: In
+                    values:
+                      - x---service-slug---x
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - env:
+          - name: NODE_ENV
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: "/app/config/debugging-user/credentials.json"
+          image: gcr.io/google_containers/pause
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 20
+            periodSeconds: 60
+            successThreshold: 1
+            timeoutSeconds: 10
+          name: x---service-slug---x
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /ping
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 20
+            periodSeconds: 60
+            successThreshold: 1
+            timeoutSeconds: 3
+          volumeMounts:
+            - mountPath: /app/config/debugging-user
+              name: debugging-user
+          resources:
+            limits:
+              cpu: 200m
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 300Mi
+      volumes:
+        - name: debugging-user
+          secret:
+            defaultMode: 420
+            secretName: tf-debugging-user
+      imagePullSecrets:
+        - name: docker-registry-google-eu
+      restartPolicy: Always
