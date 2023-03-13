@@ -92,14 +92,14 @@ git init
 git add .
 git commit -am "Initial commit from seed project from commit hash: $SEED_GIT_HASH"
 
-if [ PROJECT == "campanda" ] ; then
+if [ $PROJECT == "campanda" ] ; then
     rm Jenkinsfile
     mv CampandaJenkinsfile Jenkinsfile
     rm -rf ./deploy
     mv ./campanda-deploy ./deploy
 fi
 
-if [ PROJECT == "erento" ] ; then
+if [ $PROJECT == "erento" ] ; then
     rm CampandaJenkinsfile
     rm -rf ./campanda-deploy
 fi
