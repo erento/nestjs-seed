@@ -85,12 +85,6 @@ find . -name "*.bak" -delete
 
 rm README.md
 mv _README.md README.md
-SEED_GIT_HASH=$(git rev-parse HEAD)
-rm -rf .git/
-rm -rf prepare.sh
-git init
-git add .
-git commit -am "Initial commit from seed project from commit hash: $SEED_GIT_HASH"
 
 if [ $PROJECT == "campanda" ] ; then
     rm Jenkinsfile
@@ -103,6 +97,13 @@ if [ $PROJECT == "erento" ] ; then
     rm CampandaJenkinsfile
     rm -rf ./campanda-deploy
 fi
+
+SEED_GIT_HASH=$(git rev-parse HEAD)
+rm -rf .git/
+rm -rf prepare.sh
+git init
+git add .
+git commit -am "Initial commit from seed project from commit hash: $SEED_GIT_HASH"
 
 echo ""
 echo "♥ Prepared ♥"
