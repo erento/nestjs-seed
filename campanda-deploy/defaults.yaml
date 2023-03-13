@@ -25,7 +25,7 @@ spec:
                   - key: io.kompose.service
                     operator: In
                     values:
-                      - frontend-api
+                      - x---service-slug---x
               topologyKey: kubernetes.io/hostname
       containers:
         - env:
