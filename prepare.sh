@@ -2,12 +2,12 @@
 set -e
 
 echo '
-####################################################################################
-#                                                                                  #
-#  How to use it:                                                                  #
-#  ./prepare.sh "order-state" "Order State" "<BUGSNAG-API-KEY>" "<GCLOUD-PROJECT>" #
-#                                                                                  #
-####################################################################################
+################################################################################################
+#                                                                                              #
+#  How to use it:                                                                              #
+#  ./prepare.sh "order-state" "Order State" "<BUGSNAG-API-KEY>" "<PROJECT>" "<GCLOUD-PROJECT>" #
+#  Project can be erento or campanda                                                           #
+################################################################################################
 '
 
 if [ "$1" == "" ] ; then
@@ -25,13 +25,24 @@ fi
 SERVICE_NAME="$2"
 
 if [ "$3" == "" ] ; then
-    echo "ERROR: Please specify name of your service as second argument"
+    echo "ERROR: Please specify name of your service as third argument"
     exit 1
 fi
 
 SERVICE_BUGSNAG_API_KEY="$3"
 
-GCLOUD_PROJECT="$4"
+if [ "$4" == "" ] ; then
+    echo "ERROR: Please specify name of your project as fourth argument"
+    exit 1
+fi
+if [ "$4" != "erento"  || "$4" != "campanda"] ; then
+    echo "ERROR: Project name has to be erento or campanda"
+    exit 1
+fi
+
+PROJECT = "$4"
+
+GCLOUD_PROJECT="$5"
 
 echo "service"
 echo " - slug: "$SERVICE_SLUG
@@ -80,6 +91,18 @@ rm -rf prepare.sh
 git init
 git add .
 git commit -am "Initial commit from seed project from commit hash: $SEED_GIT_HASH"
+
+if [ PROJECT == "campanda" ] ; then
+    rm Jenkinsfile
+    mv CampandaJenkinsfile Jenkinsfile
+    rm -rf ./deploy
+    mv ./campanda-deploy ./deploy
+fi
+
+if [ PROJECT == "erento" ] ; then
+    rm CampandaJenkinsfile
+    rm -rf ./campanda-deploy
+fi
 
 echo ""
 echo "♥ Prepared ♥"

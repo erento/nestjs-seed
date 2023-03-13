@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: x---service-slug---x
+spec:
+  selector:
+    io.kompose.service: x---service-slug---x
+  type: ClusterIP
+  sessionAffinity: "None"
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+      name: http

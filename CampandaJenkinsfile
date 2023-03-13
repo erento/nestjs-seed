@@ -1,0 +1,6 @@
+campandaNestJsPipeline {
+    projectName = 'x---service-slug---x'
+    repositoryName = 'x---service-slug---x'
+    nodeImage = 'node:16.14'
+    deployDir = 'deploy'
+}
