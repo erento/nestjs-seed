@@ -5,42 +5,42 @@ echo '
 ################################################################################################
 #                                                                                              #
 #  How to use it:                                                                              #
-#  ./prepare.sh "order-state" "Order State" "<BUGSNAG-API-KEY>" "<PROJECT>" "<GCLOUD-PROJECT>" #
+#  ./prepare.sh "<PROJECT>" "order-state" "Order State" "<BUGSNAG-API-KEY>" "<GCLOUD-PROJECT>" #
 #  Project can be erento or campanda                                                           #
 ################################################################################################
 '
 
 if [ "$1" == "" ] ; then
-    echo "ERROR: Please specify slug of your service as first argument"
+    echo "ERROR: Please specify name of your project as first argument"
+    exit 1
+fi
+if [[ ! $1 =~ ^(erento|campanda)$ ]] ; then
+    echo "ERROR: Project name has to be erento or campanda"
     exit 1
 fi
 
-SERVICE_SLUG="$1"
+PROJECT="$1"
 
 if [ "$2" == "" ] ; then
-    echo "ERROR: Please specify name of your service as second argument"
+    echo "ERROR: Please specify slug of your service as second argument"
     exit 1
 fi
 
-SERVICE_NAME="$2"
+SERVICE_SLUG="$2"
 
 if [ "$3" == "" ] ; then
     echo "ERROR: Please specify name of your service as third argument"
     exit 1
 fi
 
-SERVICE_BUGSNAG_API_KEY="$3"
+SERVICE_NAME="$3"
 
-if [ "$4" == "" ] ; then
-    echo "ERROR: Please specify name of your project as fourth argument"
-    exit 1
-fi
-if [[ ! $4 =~ ^(erento|campanda)$ ]] ; then
-    echo "ERROR: Project name has to be erento or campanda"
+if [ "$3" == "" ] ; then
+    echo "ERROR: Please specify name of your service as fourth argument"
     exit 1
 fi
 
-PROJECT="$4"
+SERVICE_BUGSNAG_API_KEY="$4"
 
 GCLOUD_PROJECT="$5"
 
