@@ -7,13 +7,13 @@ metadata:
 spec:
   replicas: 1
   selector:
-      matchLabels:
+    matchLabels:
       io.kompose.service: x---service-slug---x
   template:
     metadata:
       annotations:
-          config.linkerd.io/skip-outbound-ports: "3306"
-          linkerd.io/inject: enabled
+        config.linkerd.io/skip-outbound-ports: "3306"
+        linkerd.io/inject: enabled
       labels:
         io.kompose.service: x---service-slug---x
     spec:
