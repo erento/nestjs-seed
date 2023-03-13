@@ -35,12 +35,12 @@ if [ "$4" == "" ] ; then
     echo "ERROR: Please specify name of your project as fourth argument"
     exit 1
 fi
-if [ "$4" != "erento"  || "$4" != "campanda"] ; then
+if [[ ! $4 =~ ^(erento|campanda)$ ]] ; then
     echo "ERROR: Project name has to be erento or campanda"
     exit 1
 fi
 
-PROJECT = "$4"
+PROJECT="$4"
 
 GCLOUD_PROJECT="$5"
 
