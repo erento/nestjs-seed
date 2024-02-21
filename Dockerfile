@@ -1,4 +1,4 @@
-FROM node:16.14-slim
+FROM node:20.10-slim
 LABEL maintainer="developers@erento.com"
 
 COPY . /app

@@ -1,12 +1,5 @@
-import {Server} from 'http';
-import {
-    BasicAppService,
-    BugsnagClient,
-    BugsnagErrorFilter,
-    Logger,
-    onApplicationInit,
-    runCronJobByName,
-} from '@erento/nestjs-common';
+import {Server} from 'node:http';
+import {BasicAppService, BugsnagClient, BugsnagErrorFilter, Logger, onApplicationInit, runCronJobByName} from '@erento/nestjs-common';
 import {INestApplication, ShutdownSignal} from '@nestjs/common';
 import {NestFactory} from '@nestjs/core';
 import {NestExpressApplication} from '@nestjs/platform-express';
